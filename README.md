@@ -2,8 +2,8 @@
 
 Project Name: Ice and Fire
 
-created by: Chuanqiao Huang
-            Diego Wong
+created by: Chuanqiao Huang ,  
+            Diego Wong ,  
             Louis Zhang
 
 For Setup and Build Instructions see: http://ivl.calit2.net/wiki/index.php/CSE167F2015
