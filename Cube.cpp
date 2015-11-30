@@ -41,7 +41,8 @@ void Cube::draw(DrawData& data)
     //Once the glBegin state is active many of the calls made to OpenGL (like glMultMatrixf) will be IGNORED!
     //As a good habit, only call glBegin just before you need to draw, and call end just after you finish
     glBegin(GL_QUADS);
-    
+
+	
     // Draw front face:
     glNormal3f(0.0, 0.0, 1.0);
     glVertex3f(-halfSize,  halfSize,  halfSize);

@@ -39,6 +39,13 @@ int main(int argc, char *argv[])
     glEnable(GL_TEXTURE_2D);                                    //Enable 2D textures
     glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);        //Enable Local Viewer Light Model
     
+
+	glEnable(GL_BLEND); // enable transparency
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	// Set the accumulation buffer clearing colour to black at 0,0f alpha
+	glClearAccum(0.0f, 0.0f, 0.0f, 1.0f);
+
+
     //Register callback functions:
     glutDisplayFunc(Window::displayCallback);
     glutReshapeFunc(Window::reshapeCallback);

@@ -40,6 +40,7 @@
     <OutDir>Debug\</OutDir>
     <IntDir>Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>E:\diego\ucsd\CSE 167\FinalProject\GL;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>Release\</OutDir>
@@ -49,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>c:\libs\glut</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\diego\ucsd\CSE 167\FinalProject\GL</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -59,10 +60,12 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>c:\libs\glut</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\diego\ucsd\CSE 167\FinalProject\GL</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>GLee.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libc.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,6 +93,8 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DrawData.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="UpdateData.h" />
@@ -110,6 +115,8 @@
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="DrawData.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="UpdateData.cpp" />
@@ -119,6 +126,10 @@
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="MathTestBench.cpp" />
     <ClCompile Include="OBJObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="flag.frag" />
+    <None Include="flag.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

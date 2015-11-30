@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include "Shader.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -10,10 +10,23 @@
 #include "Cube.h"
 #include "Matrix4.h"
 #include "Globals.h"
+#include "Particle.h"
 
+using namespace std;
 int Window::width  = 512;   //Set window width in pixels here
 int Window::height = 512;   //Set window height in pixels here
 
+Shader* shader;
+
+
+/* NOTE: Each Particle has 'x' amounts of small particles.
+** I have used a bad name for that, but we can change that one later.
+**
+**Example: p[0] contains 100 small little particles. 
+*/
+
+Particle p[15];
+extern const int NUMBER_OF_PIXELS;
 
 void Window::initialize(void)
 {
@@ -28,6 +41,8 @@ void Window::initialize(void)
     //Setup the cube's material properties
     Color color(0x23ff27ff);
     Globals::cube.material.color = color;
+
+	shader = new Shader("flag.vert", "flag.frag", true);
 }
 
 //----------------------------------------------------------------------------
@@ -39,7 +54,7 @@ void Window::idleCallback()
     Globals::updateData.dt = 1.0/60.0;// 60 fps
     
     //Rotate cube; if it spins too fast try smaller values and vice versa
-    Globals::cube.spin(0.0005);
+    Globals::cube.spin(0.005);
     
     //Call the update function on cube
     Globals::cube.update(Globals::updateData);
@@ -85,8 +100,13 @@ void Window::displayCallback()
     Globals::light.bind(0);
     
     //Draw the cube!
-    Globals::cube.draw(Globals::drawData);
-    
+	//shader->bind();
+   // Globals::cube.draw(Globals::drawData);
+
+	draw();  // draw the p[0] ~ p[?]  particles
+
+
+	//shader->unbind();
     //Pop off the changes we made to the matrix stack this frame
     glPopMatrix();
     
@@ -99,6 +119,41 @@ void Window::displayCallback()
     glutSwapBuffers();
 }
 
+void Window::draw() {
+
+	glMatrixMode(GL_MODELVIEW);
+
+	// I'm using PARTICLE to refer to big particle ( the one that contains many many small particles )
+	// First step... we loop the 15 PARTICLES
+	for (int i = 0; i < 15; i++)
+	{
+
+		// Looping all pixels of the PARTICLE
+		for (int j = 0; j < NUMBER_OF_PIXELS; j++)
+		{		
+			// I added this to make particle to have size... you can take it out and you will see it will be only pixels
+			// Note: It will only work if it is called before glBegin
+			glPointSize(p[i].particleSize);
+
+			glBegin(GL_POINTS);
+			
+			glColor4f(1.0f, 0.5f, 0.0f, 1.0f);  // Orange
+			//glColor4f(p[loop].red, p[loop].green, p[loop].blue, p[loop].alpha);   // If in the future we want to make better colors
+
+			// Draw the point in x/y plane - I am not good with 3D   :[
+			// But let's see if we can use 2D plane later. If not, we just have to convert to 3D which is only few calculation
+			// By the way... I used the technique of rasterize from project 3 or 4... to make it :)
+			glVertex2f(p[i].x[j], p[i].y[j]);
+
+			glEnd();
+		}
+
+		//Move particles - remember: each particle has its unique speed
+			p[i].move();
+	}
+
+	glPopMatrix();
+}
 
 //TODO: Keyboard callbacks!
 

@@ -62,9 +62,9 @@ void Shader::bind()
 
 void Shader::unbind()
 {
-    if(currentlyBoundShaderID != (void*)(0x0))
+    if(currentlyBoundShaderID != NULL)
     {
-        currentlyBoundShaderID = (void*)(0x0);
+        currentlyBoundShaderID = NULL;
         glUseProgramObjectARB(0);
     }
 }

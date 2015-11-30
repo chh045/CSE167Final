@@ -12,7 +12,7 @@ public:
     static void idleCallback(void);
     static void reshapeCallback(int, int);
     static void displayCallback(void);
-    
+	static void draw();
 };
 
 #endif
