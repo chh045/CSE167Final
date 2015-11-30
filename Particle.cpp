@@ -10,8 +10,9 @@ Particle::Particle() {
 	// modifier x/y speed.  The number is randomly put to make it work nicely 
     baseYSpeed = 0.001;
 	factorYSpeed = 0.1;
-	baseXSpeed = -0.0008;
-	factorXSpeed = 0.001;
+	//baseXSpeed = -0.0008;
+	baseXSpeed = -0.01;
+	factorXSpeed = 0.01;
 
 	initialise();
 }
@@ -19,7 +20,6 @@ void Particle::initialise() {
 
 	float ySpeedVal;
 	float xSpeedVal;
-
 
 	lifespam = 500 + rand() % 1000; // give a new lifespam each time it is called
 	
@@ -31,11 +31,11 @@ void Particle::initialise() {
 	{
 		// Generate speed of X and Y
 		ySpeedVal = baseYSpeed + ((float)rand() / (float)RAND_MAX) * factorYSpeed;
-		xSpeedVal = -0.0008 + (rand() / (float)RAND_MAX)*factorXSpeed;
+		xSpeedVal = baseXSpeed + (rand() / (float)RAND_MAX)*factorXSpeed;
 
 		// Setting initial position
 		x[i] =  (rand() / (float)RAND_MAX);
-		y[i] = (rand() / (float)RAND_MAX);
+		y[i] = (rand() / (float)RAND_MAX)/2;
 		
 		// Setting speed of the pixel
 		xSpeed[i] = xSpeedVal;
