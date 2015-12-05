@@ -16,3 +16,5 @@ RoomCube Globals::testRoom(500.0);
 bool Globals::cam3Dmove_on = false;
 
 Tree Globals::tree;
+
+Particle Globals::particle;

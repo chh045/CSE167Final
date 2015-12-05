@@ -9,31 +9,48 @@
 #endif
 
 
-	const int NUMBER_OF_PIXELS = 200;
+	const int NUMBER_OF_PIXELS = 6000;
+
+	struct Pixel {
+		// position
+		float x;
+		float y;
+		float z;
+
+		// color
+		float red;
+		float blue;
+		float green;
+		float alpha;
+
+		// speed
+		float xSpeed;
+		float ySpeed;
+		float zSpeed;
+
+		// size and life
+		float particleSize;
+		float lifespam;
+	};
 
 class Particle
 {
 private:
 	float baseYSpeed;
 	float factorYSpeed;
+	
 	float baseXSpeed;
 	float factorXSpeed;
-	float lifespam;
+
+	float baseZSpeed;
+	float factorZSpeed;
+
+	Pixel pixel[NUMBER_OF_PIXELS];
 
 public:
-	float x[NUMBER_OF_PIXELS];
-	float y[NUMBER_OF_PIXELS];
-	float xSpeed[NUMBER_OF_PIXELS];
-	float ySpeed[NUMBER_OF_PIXELS];
-
-	float red;
-	float blue;
-	float green;
-	float alpha;
-
-	float particleSize;
-
 	Particle();
-	void initialise();
+	void initialize();
 	void move();
+	void draw();
+	void pixelReborn(int);
 };

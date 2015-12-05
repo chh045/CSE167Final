@@ -3,7 +3,8 @@
 
 using namespace std;
 
-//extern const int NUMBER_OF_PIXELS;
+extern const int NUMBER_OF_PIXELS;
+
 
 Particle::Particle() {
 
@@ -14,42 +15,15 @@ Particle::Particle() {
 	baseXSpeed = -0.01;
 	factorXSpeed = 0.0001;
 
-	initialise();
+	baseZSpeed = -0.01;
+	factorZSpeed = 0.0001;
+
+	initialize();
 }
-void Particle::initialise() {
+void Particle::initialize() {
 
-	float ySpeedVal;
-	float xSpeedVal;
-
-	lifespam = 500 + rand() % 1000; // give a new lifespam each time it is called
-	
-
-	/*
-	** Loop each pixel, giving it a location and x/y speed
-	*/
 	for (int i = 0; i < NUMBER_OF_PIXELS; i++)
-	{
-		// Generate speed of X and Y
-		ySpeedVal = baseYSpeed + ((float)rand() / (float)RAND_MAX) * factorYSpeed;
-		xSpeedVal = baseXSpeed + (rand() / (float)RAND_MAX)*factorXSpeed;
-
-		// Setting initial position
-		x[i] = -5 + (rand() / (float)RAND_MAX);
-		y[i] = -5+ (rand() / (float)RAND_MAX)/2;
-		
-		// Setting speed of the pixel
-		xSpeed[i] = xSpeedVal;
-		ySpeed[i] = ySpeedVal;
-	}
-
-	// For future use.. We can set the RGB of the particle. Note: I am including alpha for opacity ( can't make it work though )
-	red = (rand() / (float)RAND_MAX);
-	green = (rand() / (float)RAND_MAX);
-	blue = (rand() / (float)RAND_MAX);
-	alpha = 1.0f;
-
-	// Giving PARTICLE a size ( it affects all small pixels )
-	particleSize = 0.5f + ((float)rand() / (float)RAND_MAX) * 3.3f;
+		pixelReborn(i);
 
 }
 void Particle::move() {
@@ -59,18 +33,99 @@ void Particle::move() {
 	for (int i = 0; i < NUMBER_OF_PIXELS; i++)
 	{
 
-			x[i] += xSpeed[i];
+		pixel[i].x += pixel[i].xSpeed;
 
-			y[i] += ySpeed[i];
+		pixel[i].y += pixel[i].ySpeed;
+
+		pixel[i].z += pixel[i].zSpeed;
 		
 	}
 
-	particleSize = particleSize*0.9;  // decrease size of pixel each movement by small amount
-	lifespam--; // decrease his life... like human life lol
+	for (int i = 0; i < NUMBER_OF_PIXELS; i++) {
+		pixel[i].particleSize = pixel[i].particleSize*0.89;  // decrease size of pixel each movement by small amount
+		pixel[i].lifespam--; // decrease his life... like human life lol
 
-	// if the particle is too small.. OR he has no more life... REBORN!
-	if (lifespam < 0 || particleSize < 0.2f)
-		initialise();
+		 // if any pixel is too small.. OR he has no more life... REBORN!
+		if (pixel[i].lifespam < 0 || pixel[i].particleSize < 0.2f)
+			pixelReborn(i);
+	}
+
+	
 
 }
 
+void Particle::draw() {
+
+
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+
+
+		for (int j = 0; j < NUMBER_OF_PIXELS; j++)
+		{
+			// I added this to make particle to have size... you can take it out and you will see it will be only pixels
+			// Note: It will only work if it is called before glBegin
+			glPointSize(pixel[j].particleSize);
+
+			glBegin(GL_POINTS);
+
+
+			glColor4f(1.0f, 0.5f, 0.0f, 1.0f);  // Orange
+			//glColor4f(pixel[j].red, pixel[j].green, pixel[j].blue, pixel[j].alpha);   // If in the future we want to make better colors
+																	  // Draw the point in x/y plane - I am not good with 3D   :[
+																	  // But let's see if we can use 2D plane later. If not, we just have to convert to 3D which is only few calculation
+																	  // By the way... I used the technique of rasterize from project 3 or 4... to make it :)
+			glVertex3f(pixel[j].x, pixel[j].y, pixel[j].z);
+
+			glEnd();
+		}
+
+		//Move particles - remember: each particle has its unique speed
+		move();
+	
+
+	glPopMatrix();
+}
+
+void Particle::pixelReborn(int id) {
+
+
+	float zSpeedVal;
+	float ySpeedVal;
+	float xSpeedVal;
+
+	/*
+	** Loop each pixel, giving it a location and x/y speed
+	*/
+	
+		// give a new lifespam each time it is called
+		pixel[id].lifespam = 700 + rand() % 1000;
+
+		// Generate speed of X and Y
+		zSpeedVal = baseYSpeed + ((float)rand() / (float)RAND_MAX) * factorYSpeed;
+		ySpeedVal = baseYSpeed + ((float)rand() / (float)RAND_MAX) * factorYSpeed;
+		xSpeedVal = baseXSpeed + (rand() / (float)RAND_MAX)*factorXSpeed;
+
+		// Setting initial position
+
+		pixel[id].x = -5 + (rand() / (float)RAND_MAX);
+		pixel[id].y = -5 + (rand() / (float)RAND_MAX) / 2;
+		pixel[id].z = -5 + (rand() / (float)RAND_MAX);
+
+		// Setting speed of the pixel
+		pixel[id].xSpeed = xSpeedVal;
+		pixel[id].ySpeed = ySpeedVal;
+		pixel[id].zSpeed = ySpeedVal;
+
+		// For future use.. We can set the RGB of the particle. Note: I am including alpha for opacity ( can't make it work though )
+		pixel[id].red = (rand() / (float)RAND_MAX);
+		pixel[id].green = (rand() / (float)RAND_MAX);
+		pixel[id].blue = (rand() / (float)RAND_MAX);
+		pixel[id].alpha = 1.0f;
+
+		// Giving PARTICLE a size ( it affects all small pixels )
+		pixel[id].particleSize = 0.5f + ((float)rand() / (float)RAND_MAX) * 3.3f;
+	
+
+}

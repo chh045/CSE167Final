@@ -10,6 +10,8 @@
 #include "CubeMapTexture.h"
 #include "RoomCube.h"
 #include "Tree.h"
+#include "Particle.h"
+
 
 class Globals
 {
@@ -30,6 +32,8 @@ public:
 	static bool cam3Dmove_on; // camera moving up/down?
 
 	static Tree tree;
+
+	static Particle particle;
 
 };
 

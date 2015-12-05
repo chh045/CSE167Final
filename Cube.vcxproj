@@ -137,10 +137,6 @@
     <ClCompile Include="MathTestBench.cpp" />
     <ClCompile Include="OBJObject.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="flag.frag" />
-    <None Include="flag.vert" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

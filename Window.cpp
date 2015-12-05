@@ -10,7 +10,6 @@
 #include "Cube.h"
 #include "Matrix4.h"
 #include "Globals.h"
-#include "Particle.h"
 #include "Utility.h"
 
 using namespace std;
@@ -33,7 +32,8 @@ Shader* envMapping_shader;
 
 
 // side work by wong
-Particle p[15];
+//Particle p[15];
+
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
 extern const int MAX_DEPTH;
 
@@ -148,7 +148,9 @@ void Window::displayCallback()
 
 
 	Globals::tree.draw();
-	draw();  // draw the p[0] ~ p[?]  particles
+	
+	
+	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
 	
 	
 	
@@ -175,46 +177,7 @@ void Window::displayCallback()
 	//EnableFPS();
 }
 
-void Window::draw() {
-	
 
-	glMatrixMode(GL_MODELVIEW);
-
-	glPushMatrix();
-	
-
-	// I'm using PARTICLE to refer to big particle ( the one that contains many many small particles )
-	// First step... we loop the 15 PARTICLES
-	for (int i = 0; i < 15; i++)
-	{
-		
-		// Looping all pixels of the PARTICLE
-		for (int j = 0; j < NUMBER_OF_PIXELS; j++)
-		{		
-			// I added this to make particle to have size... you can take it out and you will see it will be only pixels
-			// Note: It will only work if it is called before glBegin
-			glPointSize(p[i].particleSize);
-
-			glBegin(GL_POINTS);
-		
-			
-			//glColor4f(1.0f, 0.5f, 0.0f, 1.0f);  // Orange
-			glColor4f(p[i].red, p[i].green, p[i].blue, p[i].alpha);   // If in the future we want to make better colors
-
-			// Draw the point in x/y plane - I am not good with 3D   :[
-			// But let's see if we can use 2D plane later. If not, we just have to convert to 3D which is only few calculation
-			// By the way... I used the technique of rasterize from project 3 or 4... to make it :)
-			glVertex2f(p[i].x[j], p[i].y[j]);
-
-			glEnd();
-		}
-
-		//Move particles - remember: each particle has its unique speed
-			p[i].move();
-	}
-
-	glPopMatrix();
-}
 
 //TODO: Keyboard callbacks!
 void Window::keyboardCallback(unsigned char key, int x, int y)
