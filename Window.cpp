@@ -11,12 +11,15 @@
 #include "Matrix4.h"
 #include "Globals.h"
 #include "Particle.h"
+#include "Utility.h"
 
 using namespace std;
 int Window::width  = 512;   //Set window width in pixels here
 int Window::height = 512;   //Set window height in pixels here
 
 Shader* shader;
+Shader* skybox_shader;
+Shader* envMapping_shader;
 
 
 /* NOTE: Each Particle has 'x' amounts of small particles.
@@ -42,7 +45,17 @@ void Window::initialize(void)
     Color color(0x23ff27ff);
     Globals::cube.material.color = color;
 
+	Globals::testRoomTex = CubeMapTexture(
+		"PalldioPalace_intern_right.ppm",
+		"PalldioPalace_intern_left.ppm",
+		"PalldioPalace_intern_top.ppm",
+		"PalldioPalace_intern_base.ppm",
+		"PalldioPalace_intern_front.ppm",
+		"PalldioPalace_intern_back.ppm");
+
 	shader = new Shader("flag.vert", "flag.frag", true);
+	skybox_shader = new Shader("skybox.vert", "skybox.frag", true);
+	envMapping_shader = new Shader("envMapping.vert", "envMapping.frag", true);
 }
 
 //----------------------------------------------------------------------------
@@ -99,12 +112,34 @@ void Window::displayCallback()
     //(if we didn't the light would move with the camera, why is that?)
     Globals::light.bind(0);
     
+	glDisable(GL_LIGHTING);
+	
+	// draw test room
+	skybox_shader->bind();
+	Globals::testRoomTex.bind();
+	Globals::testRoom.draw(Globals::drawData);
+	Globals::testRoomTex.unbind();
+	skybox_shader->unbind();
+	
+	/* drawing sphere with environmental mapping */
+	envMapping_shader->bind();
+	GLint camPos_loc = glGetUniformLocation(envMapping_shader->getPid(), "camPos");
+	glUniform3fv(camPos_loc, 1, Globals::camera.getPos().ptr());
+	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
+	//Globals::camera.getPos().print("cam pos is ");
+
+	Globals::testRoomTex.bind();
+	Globals::sphere.draw(Globals::drawData);
+	Globals::testRoomTex.unbind();
+	envMapping_shader->unbind();
+
     //Draw the cube!
 	//shader->bind();
-   // Globals::cube.draw(Globals::drawData);
+    //Globals::cube.draw(Globals::drawData);
 
 	draw();  // draw the p[0] ~ p[?]  particles
 
+	glEnable(GL_LIGHTING);
 
 	//shader->unbind();
     //Pop off the changes we made to the matrix stack this frame
@@ -117,6 +152,9 @@ void Window::displayCallback()
     
     //Swap the off-screen buffer (the one we just drew to) with the on-screen buffer
     glutSwapBuffers();
+
+	// comment out when debugging
+	//EnableFPS();
 }
 
 void Window::draw() {
@@ -162,3 +200,4 @@ void Window::draw() {
 //TODO: Mouse callbacks!
 
 //TODO: Mouse Motion callbacks!
+

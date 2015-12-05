@@ -43,3 +43,7 @@ void Camera::set(Vector3& e, Vector3& d, Vector3& up)
     this->up = up;
     update();
 }
+
+Vector3 Camera::getPos() {
+	return e;
+}

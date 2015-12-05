@@ -18,7 +18,7 @@
 int main(int argc, char *argv[])
 {
     //Math Test Bench
-    MathTestBench::runTests();
+    //MathTestBench::runTests();
     
     //GLUT and OpenGL Configuration
     glutInit(&argc, argv);                                      //Initialize GLUT
