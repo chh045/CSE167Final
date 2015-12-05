@@ -11,6 +11,7 @@
 #include "Matrix4.h"
 #include "Globals.h"
 #include "Particle.h"
+#include "Tree.h"
 
 using namespace std;
 int Window::width  = 512;   //Set window width in pixels here
@@ -25,8 +26,12 @@ Shader* shader;
 **Example: p[0] contains 100 small little particles. 
 */
 
+
+// side work by wong
+Tree tree;
 Particle p[15];
-extern const int NUMBER_OF_PIXELS;
+extern const int NUMBER_OF_PIXELS;  // from Particle.h
+
 
 void Window::initialize(void)
 {
@@ -43,6 +48,16 @@ void Window::initialize(void)
     Globals::cube.material.color = color;
 
 	shader = new Shader("flag.vert", "flag.frag", true);
+
+
+	// just for testing.. delete later
+	tree.expand();
+	tree.expand();
+	tree.expand();
+	tree.expand();
+	//for (int i = 0; i < 3; i++)
+	//tree.expands(i);
+	tree.printLanguage();
 }
 
 //----------------------------------------------------------------------------
@@ -102,14 +117,18 @@ void Window::displayCallback()
     //Draw the cube!
 	//shader->bind();
    // Globals::cube.draw(Globals::drawData);
-
+	
+	tree.draw();
 	draw();  // draw the p[0] ~ p[?]  particles
-
+	
+	//tree.printLanguage();
 
 	//shader->unbind();
     //Pop off the changes we made to the matrix stack this frame
     glPopMatrix();
     
+
+
     //Tell OpenGL to clear any outstanding commands in its command buffer
     //This will make sure that all of our commands are fully executed before
     //we swap buffers and show the user the freshly drawn frame
@@ -120,14 +139,18 @@ void Window::displayCallback()
 }
 
 void Window::draw() {
+	
 
 	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+	
 
 	// I'm using PARTICLE to refer to big particle ( the one that contains many many small particles )
 	// First step... we loop the 15 PARTICLES
 	for (int i = 0; i < 15; i++)
 	{
-
+		
 		// Looping all pixels of the PARTICLE
 		for (int j = 0; j < NUMBER_OF_PIXELS; j++)
 		{		
@@ -136,9 +159,10 @@ void Window::draw() {
 			glPointSize(p[i].particleSize);
 
 			glBegin(GL_POINTS);
+		
 			
-			glColor4f(1.0f, 0.5f, 0.0f, 1.0f);  // Orange
-			//glColor4f(p[loop].red, p[loop].green, p[loop].blue, p[loop].alpha);   // If in the future we want to make better colors
+			//glColor4f(1.0f, 0.5f, 0.0f, 1.0f);  // Orange
+			glColor4f(p[i].red, p[i].green, p[i].blue, p[i].alpha);   // If in the future we want to make better colors
 
 			// Draw the point in x/y plane - I am not good with 3D   :[
 			// But let's see if we can use 2D plane later. If not, we just have to convert to 3D which is only few calculation

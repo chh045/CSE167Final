@@ -3,7 +3,7 @@
 
 using namespace std;
 
-extern const int NUMBER_OF_PIXELS;
+//extern const int NUMBER_OF_PIXELS;
 
 Particle::Particle() {
 
@@ -12,7 +12,7 @@ Particle::Particle() {
 	factorYSpeed = 0.1;
 	//baseXSpeed = -0.0008;
 	baseXSpeed = -0.01;
-	factorXSpeed = 0.01;
+	factorXSpeed = 0.0001;
 
 	initialise();
 }
