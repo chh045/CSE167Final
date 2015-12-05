@@ -17,6 +17,10 @@ using namespace std;
 int Window::width  = 512;   //Set window width in pixels here
 int Window::height = 512;   //Set window height in pixels here
 
+bool Window::mouse_rotate_on = false;
+int Window::last_x = 0;
+int Window::last_y = 0;
+
 Shader* shader;
 Shader* skybox_shader;
 Shader* envMapping_shader;
@@ -194,6 +198,32 @@ void Window::draw() {
 }
 
 //TODO: Keyboard callbacks!
+void Window::keyboardCallback(unsigned char key, int x, int y)
+{
+	switch (key) {
+	case 'h':
+		Globals::cam3Dmove_on = !Globals::cam3Dmove_on;
+		break;
+	}
+}
+
+void Window::specialKeyCallback(int key, int x, int y)
+{
+	switch (key) {
+	case GLUT_KEY_UP:
+		Globals::camera.moveFoward(Globals::cam3Dmove_on);
+		break;
+	case GLUT_KEY_DOWN:
+		Globals::camera.moveBack(Globals::cam3Dmove_on);
+		break;
+	case GLUT_KEY_LEFT:
+		Globals::camera.moveLeft();
+		break;
+	case GLUT_KEY_RIGHT:
+		Globals::camera.moveRight();
+		break;
+	}
+}
 
 //TODO: Function Key callbacks!
 
@@ -201,3 +231,52 @@ void Window::draw() {
 
 //TODO: Mouse Motion callbacks!
 
+Vector3 rotateAxis(int x, int y, int width, int height) {
+	//float xx = (2.0 * x - width) / width, // why is this?
+	float xx = (width - 2.0 * x) / width, // why is this?
+		yy = (2.0 * y - height) / height;
+		//yy = (height - 2.0 * y) / height;
+	Vector3 vec(xx, yy, 0.0);
+
+	float dis = vec.magnitude();
+	dis = (dis < 1.0) ? dis : 1.0;
+
+	vec.set(2, std::sqrtf(1.001 - dis * dis));
+
+	vec.normalize();
+
+	return vec;
+}
+
+void Window::mouseButton(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON) {
+		cerr << "mouseButton\n";
+
+		Window::mouse_rotate_on = (state == GLUT_DOWN) ? true : false;
+
+		Window::last_x = x;
+		Window::last_y = y;
+	}
+}
+
+//TODO: Mouse Motion callbacks!
+void Window::mouseMotion(int x, int y)
+{
+	// rotate obj about the center
+	if (Window::mouse_rotate_on) {
+		
+		Vector3 last = rotateAxis(last_x, last_y, Window::width, Window::height);
+		Vector3 curr = rotateAxis(x, y, Window::width, Window::height);
+
+		float velocity = (curr - last).magnitude();
+
+		if (velocity > 0.0001) {
+			//Vector3 rot_axis = last.cross(curr);
+			Vector3 rot_axis = curr.cross(last);
+			float rot_angle = last.angle(curr) * 0.05; // radians
+
+			Globals::camera.rotate(rot_axis, rot_angle);
+		}
+	}
+}

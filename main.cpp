@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
     glClear(GL_DEPTH_BUFFER_BIT);                               //Clear depth buffer
     glClearColor(0.0, 0.0, 0.0, 0.0);                           //Set clear color to black
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                  //Set polygon drawing mode to fill front and back of each polygon
-    glDisable(GL_CULL_FACE);                                    //Disable backface culling to render both sides of polygons
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);                                   //Disable backface culling to render both sides of polygons
     glShadeModel(GL_SMOOTH);                                    //Set shading to smooth
     
     glEnable(GL_COLOR_MATERIAL);                                //Enable color materials
@@ -52,9 +53,13 @@ int main(int argc, char *argv[])
     glutIdleFunc(Window::idleCallback);
     //Register the callback for the keyboard
     //Register the callback for the keyboard function keys
-    //Register the callback for the mouse
-    //Register the callback for the mouse motion
     //Register the callback for the mouse passive motion
+	glutKeyboardFunc(Window::keyboardCallback);
+	glutSpecialFunc(Window::specialKeyCallback);
+	//Register the callback for the mouse
+	glutMouseFunc(Window::mouseButton);
+	//Register the callback for the mouse motion
+	glutMotionFunc(Window::mouseMotion);
     
     //Print Shader Debug Information:
     printf("%s\n%s\n",

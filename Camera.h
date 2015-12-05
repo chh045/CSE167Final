@@ -24,11 +24,19 @@ public:
     
     void update(void);
     
+	void rotate(Vector3 axis, float angle);
+
     Matrix4& getMatrix(void);
     Matrix4& getInverseMatrix(void);
     
     void set(Vector3&, Vector3&, Vector3&);
 	Vector3 getPos(void);
+	Vector3 getLookDirec(void);
+
+	void moveFoward(bool changeY_on);
+	void moveBack(bool changeY_on);
+	void moveLeft(void);
+	void moveRight(void);
 };
 
 #endif

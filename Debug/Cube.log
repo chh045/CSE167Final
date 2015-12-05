@@ -1,6 +1,44 @@
-﻿  Particle.cpp
-  Generating Code...
-  Compiling...
-  Window.cpp
-  Generating Code...
-  Cube.vcxproj -> E:\diego\ucsd\CSE 167\FinalProject\Debug\Cube.exe
+﻿Build started 12/5/2015 12:59:57 AM.
+     1>Project "C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Cube.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\glut\glut-3.7.6-bin\GLEE" /I"E:\diego\ucsd\CSE 167\FinalProject\GL" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp Cube.cpp Drawable.cpp Globals.cpp Light.cpp OBJObject.cpp RoomCube.cpp Window.cpp main.cpp
+         Window.cpp
+         Camera.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         main.cpp
+         RoomCube.cpp
+         OBJObject.cpp
+         Light.cpp
+         Globals.cpp
+         Drawable.cpp
+         Cube.cpp
+       Link:
+         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\Cube.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\glut\glut-3.7.6-bin\GLEE" /LIBPATH:"E:\diego\ucsd\CSE 167\FinalProject\GL" legacy_stdio_definitions.lib GLee.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libc.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"Debug\Cube.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\Cube.lib" /MACHINE:X86 /SAFESEH Debug\CubeMapTexture.obj
+         Debug\main.obj
+         Debug\Camera.obj
+         Debug\Color.obj
+         Debug\Cube.obj
+         Debug\Light.obj
+         Debug\Material.obj
+         Debug\Matrix4.obj
+         Debug\Drawable.obj
+         Debug\DrawData.obj
+         Debug\Particle.obj
+         Debug\RoomCube.obj
+         Debug\Shader.obj
+         Debug\Sphere.obj
+         Debug\Texture.obj
+         Debug\UpdateData.obj
+         Debug\Vector3.obj
+         Debug\Vector4.obj
+         Debug\Window.obj
+         Debug\Globals.obj
+         Debug\MathTestBench.obj
+         Debug\OBJObject.obj
+         Cube.vcxproj -> C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Debug\Cube.exe
+     1>Done Building Project "C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Cube.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.18

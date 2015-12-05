@@ -3,7 +3,7 @@
 
 class Window	  // OpenGL output window related routines
 {
-    
+	
 public:
     
     static int width, height; 	            // window size
@@ -13,6 +13,15 @@ public:
     static void reshapeCallback(int, int);
     static void displayCallback(void);
 	static void draw();
+
+	static void keyboardCallback(unsigned char key, int x, int y);
+	static void specialKeyCallback(int key, int x, int y);
+	static void mouseButton(int button, int state, int x, int y);
+	static void mouseMotion(int x, int y);
+	
+	static bool mouse_rotate_on;
+	static int last_x, last_y;
+
 };
 
 #endif

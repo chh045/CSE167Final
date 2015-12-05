@@ -21,10 +21,12 @@ public:
     static Light light;
     static DrawData drawData;
     static UpdateData updateData;
-    //Feel free to add more member variables as needed
     
 	static CubeMapTexture testRoomTex;
 	static RoomCube testRoom;
+
+	/* flags */
+	static bool cam3Dmove_on; // camera moving up/down?
 };
 
 #endif
