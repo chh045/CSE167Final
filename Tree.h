@@ -20,7 +20,7 @@ const float ANGLE = 42.0;
 class Tree
 {
 private:
-	string language = "F[+YL][-YL]YL"; // F/Y = branch   +/-  = rotate    L = leaf
+	string language = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
 	float lineLength = 0.5; 
 	int lineWidth = 6;
 

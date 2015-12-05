@@ -88,12 +88,14 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeMapTexture.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DrawData.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="RoomCube.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
@@ -107,6 +109,7 @@
     <ClInclude Include="OBJObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CubeMapTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -117,6 +120,7 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="DrawData.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="RoomCube.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />

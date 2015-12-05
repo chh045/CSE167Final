@@ -1,2 +1,2 @@
-﻿main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+﻿  Window.cpp
   Cube.vcxproj -> E:\diego\ucsd\CSE 167\FinalProject\Debug\Cube.exe

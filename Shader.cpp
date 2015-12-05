@@ -69,6 +69,10 @@ void Shader::unbind()
     }
 }
 
+GLhandleARB Shader::getPid() {
+	return pid;
+}
+
 void Shader::printLog(const char* tag)
 {
 	char glslLog[1024];

@@ -28,7 +28,7 @@ public:
     Matrix4& getInverseMatrix(void);
     
     void set(Vector3&, Vector3&, Vector3&);
-    
+	Vector3 getPos(void);
 };
 
 #endif

@@ -34,8 +34,8 @@ void Particle::initialise() {
 		xSpeedVal = baseXSpeed + (rand() / (float)RAND_MAX)*factorXSpeed;
 
 		// Setting initial position
-		x[i] =  (rand() / (float)RAND_MAX);
-		y[i] = (rand() / (float)RAND_MAX)/2;
+		x[i] = -5 + (rand() / (float)RAND_MAX);
+		y[i] = -5+ (rand() / (float)RAND_MAX)/2;
 		
 		// Setting speed of the pixel
 		xSpeed[i] = xSpeedVal;
