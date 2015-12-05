@@ -14,22 +14,24 @@
 
 using namespace std;
 
-
 const float ANGLE = 42.0;
+const int MAX_DEPTH = 5;
 
 class Tree
 {
 private:
-	string language = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
+	string rule = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
 	float lineLength = 0.5; 
-	int lineWidth = 6;
+	int lineWidth = 3;
+	std::vector<string> language;
 
 public:
 
 	Tree();
-	int depth = 0;
 
-	float angle = 0;
+	int current_depth = 0;
+
+	float angle = 30.0;
 
 	void drawLine();
 
@@ -37,6 +39,5 @@ public:
 
 	void expand();
 
-	void printLanguage();
-
+	void printLanguage(int);
 };

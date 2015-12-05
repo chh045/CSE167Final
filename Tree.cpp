@@ -2,17 +2,19 @@
 
 
 Tree::Tree() {
+	language.push_back(rule);
+
+	for (int i = 0; i < MAX_DEPTH; i++)
+		expand();
 }
 
 void Tree::drawLine() {
 
 	glLineWidth(lineWidth);
-
 	glBegin(GL_LINES);
 	glVertex3f(0, 0, 0);
 	glVertex3f(0, lineLength, 0);
 	glEnd();
-
 	glTranslatef(0, lineLength, 0);
 
 }
@@ -22,7 +24,9 @@ void Tree::draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	string str = "";
+	string language;
 
+ language = this->language[current_depth];
 
 	for (int i = 0; i < language.size(); i++) {
 		str = language.at(i);
@@ -43,27 +47,24 @@ void Tree::draw() {
 		else if (str.compare("L") == 0) {
 			glColor3f(0, 1, 0); // green
 			glBegin(GL_TRIANGLES);
-
 			glVertex3f(0, 0, 0);
 			glVertex3f(-0.15, 0, -0.4);
 			glVertex3f(0, 1, 0);
 			glVertex3f(0, 0, 0);
 			glVertex3f(0.15, 0, 0.4);
 			glVertex3f(0, 1.0, 0);
-
 			glEnd();
 		}
 		else if (str.compare("+") == 0) {
-			glRotatef(-ANGLE, 1, 0, 0);
-			glRotatef(ANGLE * 8, 0, 1, 0);
-			glRotatef(-ANGLE, 0, 0, 1);
+			glRotatef(-angle, 1, 0, 0);
+			glRotatef(angle * 8, 0, 1, 0);
+			glRotatef(-angle, 0, 0, 1);
 		}
 		else if (str.compare("-") == 0) {
-			glRotatef(ANGLE, 1, 0, 0);
-			glRotatef(ANGLE * 8, 0, 1, 0);
-			glRotatef(ANGLE, 0, 0, 1);
+			glRotatef(angle, 1, 0, 0);
+			glRotatef(angle * 8, 0, 1, 0);
+			glRotatef(angle, 0, 0, 1);
 		}
-
 
 	}
 
@@ -74,20 +75,21 @@ void Tree::expand() {
 
 	string newLanguage = "";
 
-	for (int i = 0; i < language.length(); i++) {
+	for (int i = 0; i < rule.length(); i++) {
 
-		if (language.at(i) == 'F')
+		if (rule.at(i) == 'F')
 			newLanguage.append("FF");
-		else if (language.at(i) == 'Y')
+		else if (rule.at(i) == 'Y')
 			newLanguage.append("F[+YL]F[-YL]+Y");
 		else
-			newLanguage += language.at(i);
+			newLanguage += rule.at(i);
 		}
-	language = newLanguage;
+	rule = newLanguage;
+	language.push_back(newLanguage);
 }
 
-void Tree::printLanguage() {
+void Tree::printLanguage(int depth) {
 
-	cout << language << endl;
-
+	if (depth >= 0 && depth <= MAX_DEPTH  && depth < language.size())
+	cout << language[depth] << endl;
 }

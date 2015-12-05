@@ -231,7 +231,7 @@ Matrix4 Matrix4::makeRotateArbitrary(Vector3 a, float angle)
     float ax = a[0];
     float ay = a[1];
     float az = a[2];
-    
+	
     m[0][0] = c + ax*ax*(1.0 - c);      m[1][0] = ax*ay*(1.0 - c) - az*s;	m[2][0] = ax*az*(1.0- c) + ay*s;
     m[0][1] = ay*ax*(1.0 - c) + az*s;	m[1][1] = c + ay*ay*(1.0 - c);      m[2][1] = ay*az*(1.0 - c) - ax*s;
     m[0][2] = az*ax*(1.0 - c) - ay*s;	m[1][2] = az*ay*(1.0 - c) + ax*s;	m[2][2] = c + az*az*(1.0 - c);

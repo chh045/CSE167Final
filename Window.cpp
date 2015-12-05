@@ -11,12 +11,15 @@
 #include "Matrix4.h"
 #include "Globals.h"
 #include "Particle.h"
-#include "Tree.h"
 #include "Utility.h"
 
 using namespace std;
 int Window::width  = 512;   //Set window width in pixels here
 int Window::height = 512;   //Set window height in pixels here
+
+bool Window::mouse_rotate_on = false;
+int Window::last_x = 0;
+int Window::last_y = 0;
 
 Shader* skybox_shader;
 Shader* envMapping_shader;
@@ -30,10 +33,9 @@ Shader* envMapping_shader;
 
 
 // side work by wong
-Tree tree;
 Particle p[15];
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
-
+extern const int MAX_DEPTH;
 
 void Window::initialize(void)
 {
@@ -118,6 +120,7 @@ void Window::displayCallback()
     
 	glDisable(GL_LIGHTING);
 	
+	
 	// draw test room
 	skybox_shader->bind();
 	Globals::testRoomTex.bind();
@@ -132,6 +135,8 @@ void Window::displayCallback()
 	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
 	//Globals::camera.getPos().print("cam pos is ");
 
+	
+
 	Globals::testRoomTex.bind();
 	Globals::sphere.draw(Globals::drawData);
 	Globals::testRoomTex.unbind();
@@ -140,14 +145,15 @@ void Window::displayCallback()
     //Draw the cube!
 	//shader->bind();
    // Globals::cube.draw(Globals::drawData);
-	
-	tree.draw();
-	draw();  // draw the p[0] ~ p[?]  particles
-	
-	//tree.printLanguage();
-    //Globals::cube.draw(Globals::drawData);
 
+
+	Globals::tree.draw();
 	draw();  // draw the p[0] ~ p[?]  particles
+	
+	
+	
+
+    //Globals::cube.draw(Globals::drawData);
 
 	glEnable(GL_LIGHTING);
 
@@ -211,20 +217,112 @@ void Window::draw() {
 }
 
 //TODO: Keyboard callbacks!
-
 void Window::keyboardCallback(unsigned char key, int x, int y)
 {
 	switch (key) {
-	case 'E':
-		tree.expand();
+	case 'A':
+		Globals::tree.angle++;
 		break;
-	case 'e':
+	case 'a':
+		Globals::tree.angle--;
+		break;
+	case 'D':
+		if (Globals::tree.current_depth < MAX_DEPTH)
+		Globals::tree.current_depth++;
+		break;
+	case 'd':
+		if (Globals::tree.current_depth > 0)
+		Globals::tree.current_depth--;
+		break;
+	case 'h':
+		Globals::cam3Dmove_on = !Globals::cam3Dmove_on;
+		break;
+
+	case '0':
+		Globals::tree.printLanguage(0);
+		break;
+	case '1':
+		Globals::tree.printLanguage(1);
+		break;
+	case '2':
+		Globals::tree.printLanguage(2);
+		break;
+	case '3':
+		Globals::tree.printLanguage(3);
 		break;
 	}
 }
+
+void Window::specialKeyCallback(int key, int x, int y)
+{
+	switch (key) {
+	case GLUT_KEY_UP:
+		Globals::camera.moveFoward(Globals::cam3Dmove_on);
+		break;
+	case GLUT_KEY_DOWN:
+		Globals::camera.moveBack(Globals::cam3Dmove_on);
+		break;
+	case GLUT_KEY_LEFT:
+		Globals::camera.moveLeft();
+		break;
+	case GLUT_KEY_RIGHT:
+		Globals::camera.moveRight();
+		break;
+	}
+}
+
 //TODO: Function Key callbacks!
 
 //TODO: Mouse callbacks!
 
 //TODO: Mouse Motion callbacks!
 
+Vector3 rotateAxis(int x, int y, int width, int height) {
+	//float xx = (2.0 * x - width) / width, // why is this?
+	float xx = (width - 2.0 * x) / width, // why is this?
+		yy = (2.0 * y - height) / height;
+		//yy = (height - 2.0 * y) / height;
+	Vector3 vec(xx, yy, 0.0);
+
+	float dis = vec.magnitude();
+	dis = (dis < 1.0) ? dis : 1.0;
+
+	vec.set(2, std::sqrtf(1.001 - dis * dis));
+
+	vec.normalize();
+
+	return vec;
+}
+
+void Window::mouseButton(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON) {
+		cerr << "mouseButton\n";
+
+		Window::mouse_rotate_on = (state == GLUT_DOWN) ? true : false;
+
+		Window::last_x = x;
+		Window::last_y = y;
+	}
+}
+
+//TODO: Mouse Motion callbacks!
+void Window::mouseMotion(int x, int y)
+{
+	// rotate obj about the center
+	if (Window::mouse_rotate_on) {
+		
+		Vector3 last = rotateAxis(last_x, last_y, Window::width, Window::height);
+		Vector3 curr = rotateAxis(x, y, Window::width, Window::height);
+
+		float velocity = (curr - last).magnitude();
+
+		if (velocity > 0.0001) {
+			//Vector3 rot_axis = last.cross(curr);
+			Vector3 rot_axis = curr.cross(last);
+			float rot_angle = last.angle(curr) * 0.05; // radians
+
+			Globals::camera.rotate(rot_axis, rot_angle);
+		}
+	}
+}
