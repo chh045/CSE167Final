@@ -133,9 +133,6 @@ void Window::displayCallback()
 	GLint camPos_loc = glGetUniformLocation(envMapping_shader->getPid(), "camPos");
 	glUniform3fv(camPos_loc, 1, Globals::camera.getPos().ptr());
 	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
-	//Globals::camera.getPos().print("cam pos is ");
-
-	
 
 	Globals::testRoomTex.bind();
 	Globals::sphere.draw(Globals::drawData);
@@ -238,19 +235,21 @@ void Window::specialKeyCallback(int key, int x, int y)
 
 //TODO: Mouse callbacks!
 
+
 //TODO: Mouse Motion callbacks!
 
 Vector3 rotateAxis(int x, int y, int width, int height) {
-	//float xx = (2.0 * x - width) / width, // why is this?
-	float xx = (width - 2.0 * x) / width, // why is this?
-		yy = (2.0 * y - height) / height;
-		//yy = (height - 2.0 * y) / height;
+	float xx = (2.0 * x - width) / width, // why is this?
+	//float xx = (width - 2.0 * x) / width, // why is this?
+		//yy = (2.0 * y - height) / height;
+		yy = (height - 2.0 * y) / height;
 	Vector3 vec(xx, yy, 0.0);
 
 	float dis = vec.magnitude();
 	dis = (dis < 1.0) ? dis : 1.0;
 
-	vec.set(2, std::sqrtf(1.001 - dis * dis));
+	//if (Globals::camera.getLookDirec()[2] < 0)
+	vec.set(2, -std::sqrtf(1.001 - dis * dis));
 
 	vec.normalize();
 
@@ -259,33 +258,54 @@ Vector3 rotateAxis(int x, int y, int width, int height) {
 
 void Window::mouseButton(int button, int state, int x, int y)
 {
+	/*
 	if (button == GLUT_LEFT_BUTTON) {
-		cerr << "mouseButton\n";
-
 		Window::mouse_rotate_on = (state == GLUT_DOWN) ? true : false;
 
 		Window::last_x = x;
 		Window::last_y = y;
 	}
+	*/
 }
 
 //TODO: Mouse Motion callbacks!
 void Window::mouseMotion(int x, int y)
 {
+	/*
 	// rotate obj about the center
 	if (Window::mouse_rotate_on) {
-		
 		Vector3 last = rotateAxis(last_x, last_y, Window::width, Window::height);
 		Vector3 curr = rotateAxis(x, y, Window::width, Window::height);
 
 		float velocity = (curr - last).magnitude();
 
 		if (velocity > 0.0001) {
-			//Vector3 rot_axis = last.cross(curr);
-			Vector3 rot_axis = curr.cross(last);
-			float rot_angle = last.angle(curr) * 0.05; // radians
+			Vector3 rot_axis = last.cross(curr).normalize();
+
+			rot_axis.print("axis is ");
+			//Vector3 rot_axis = curr.cross(last);
+			float rot_angle = velocity * 0.5; // radians
 
 			Globals::camera.rotate(rot_axis, rot_angle);
 		}
+		last_x = x;
+		last_y = y;
+	}
+	*/
+}
+
+void Window::passiveMouseMotion(int x, int y) {
+	
+	// rotate in camera space (z axis is out from the screen)
+	Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
+	Vector3 neg_z(0, 0, -1);
+
+	Vector3 rot_axis = neg_z.cross(axis);
+
+	float velocity = (axis - neg_z).magnitude();
+	
+	if (velocity > 0.001) {
+		float rot_angle = velocity * 0.05;
+		Globals::camera.rotate(rot_axis, rot_angle);
 	}
 }

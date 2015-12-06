@@ -66,22 +66,35 @@ void Camera::update()
 }
 
 void Camera::rotate(Vector3 axis, float angle) {
-	Vector3 old_e = e;
 
-	// translate d and e s.t. e is at the origin
-	e = e - old_e;
-	d = d - old_e;
+	// project e and d into camera space
+	Vector3 e_cam = ci * e;
+	Vector3 d_cam = ci * d;
 
-	// rotate d around e (also the origin)
+	// translate e_cam and d_cam s.t. e_cam is at origin
+	Vector3 old_e_cam = e_cam;
+	e_cam = e_cam - old_e_cam;
+	d_cam = d_cam - old_e_cam;
+
+	// rotate d_cam around e_cam (also the origin) (in camera space
 	Matrix4 m;
-	d = m.makeRotateArbitrary(axis, angle) * d;
+	d_cam = m.makeRotateArbitrary(axis, angle) * d_cam;
 
-	// translate back
-	e = e + old_e;
-	d = d + old_e;
+	// translate d_cam and e_cam back
+	e_cam = e_cam + old_e_cam;
+	d_cam = d_cam + old_e_cam;
 
-	e.print("e is ");
-	d.print("d is ");
+	// project back to world space
+	e = c * e_cam;
+	d = c * d_cam;
+
+	// re calculate up
+	Vector3 true_up(0, 1, 0);
+	Vector3 right = (d - e).cross(true_up);
+	up = right.cross(d - e).normalize();
+
+	//e.print("e is ");
+	//d.print("d is ");
 
 	update();
 }

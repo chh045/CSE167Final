@@ -18,7 +18,8 @@ public:
 	static void specialKeyCallback(int key, int x, int y);
 	static void mouseButton(int button, int state, int x, int y);
 	static void mouseMotion(int x, int y);
-	
+	static void passiveMouseMotion(int x, int y);
+
 	static bool mouse_rotate_on;
 	static int last_x, last_y;
 

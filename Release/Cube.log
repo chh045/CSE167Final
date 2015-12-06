@@ -1,8 +1,12 @@
-﻿Build started 12/5/2015 3:29:12 AM.
+﻿Build started 12/5/2015 5:50:07 PM.
      1>Project "C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Cube.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\glut\glut-3.7.6-bin\GLEE" /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
+         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\glut\glut-3.7.6-bin\GLEE" /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp
+         Camera.cpp
+     1>Camera.cpp(124): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>Camera.cpp(138): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>Camera.cpp(151): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>Camera.cpp(164): warning C4305: 'argument': truncation from 'double' to 'float'
        Link:
          F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Release\Cube.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\glut\glut-3.7.6-bin\GLEE" legacy_stdio_definitions.lib GLee.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libc.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"Release\Cube.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Release\Cube.lib" /MACHINE:X86 /SAFESEH Release\CubeMapTexture.obj
          Release\main.obj
@@ -19,6 +23,7 @@
          Release\Shader.obj
          Release\Sphere.obj
          Release\Texture.obj
+         Release\Tree.obj
          Release\UpdateData.obj
          Release\Vector3.obj
          Release\Vector4.obj
@@ -32,4 +37,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.97
+Time Elapsed 00:00:01.98
