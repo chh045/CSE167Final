@@ -130,7 +130,7 @@ void Window::displayCallback()
 	
 	/* drawing sphere with environmental mapping */
 	envMapping_shader->bind();
-	GLint camPos_loc = glGetUniformLocation(envMapping_shader->getPid(), "camPos");
+	GLint camPos_loc = glGetUniformLocationARB(envMapping_shader->getPid(), "camPos");
 	glUniform3fv(camPos_loc, 1, Globals::camera.getPos().ptr());
 	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
 	//Globals::camera.getPos().print("cam pos is ");
