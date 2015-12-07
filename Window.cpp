@@ -10,16 +10,19 @@
 #include "Cube.h"
 #include "Matrix4.h"
 #include "Globals.h"
+#include "ShadowMapping.h"
 #include "Utility.h"
 
 using namespace std;
-int Window::width  = 512;   //Set window width in pixels here
-int Window::height = 512;   //Set window height in pixels here
+int Window::width  = 640;   //Set window width in pixels here
+int Window::height = 480;   //Set window height in pixels here
 
 bool Window::mouse_rotate_on = false;
 int Window::last_x = 0;
 int Window::last_y = 0;
 
+ShadowMapping* shadow;
+Shader* shadow1;
 Shader* skybox_shader;
 Shader* envMapping_shader;
 
@@ -45,11 +48,15 @@ void Window::initialize(void)
     Globals::light.quadraticAttenuation = 0.02;
     
     //Initialize cube matrix:
-    Globals::cube.toWorld.identity();
+    //Globals::cube.toWorld.identity();
     
     //Setup the cube's material properties
     Color color(0x23ff27ff);
     Globals::cube.material.color = color;
+    
+    //shadow = new ShadowMapping("shadow_map.vert", "shadow_map.frag");
+    shadow1 = new Shader("shadow_map.vert", "shadow_map.frag", true);
+    shadow = new ShadowMapping(shadow1->getPid());
 
 	Globals::testRoomTex = CubeMapTexture(
 		"PalldioPalace_intern_right.ppm",
@@ -73,7 +80,7 @@ void Window::idleCallback()
     Globals::updateData.dt = 1.0/60.0;// 60 fps
     
     //Rotate cube; if it spins too fast try smaller values and vice versa
-    Globals::cube.spin(0.005);
+    //Globals::cube.spin(0.005);
     
     //Call the update function on cube
     Globals::cube.update(Globals::updateData);
@@ -119,7 +126,9 @@ void Window::displayCallback()
     Globals::light.bind(0);
     
 	glDisable(GL_LIGHTING);
-	
+    glEnable(GL_CULL_FACE);
+    shadow->renderScene(Globals::group, Globals::emulateDay);
+    glDisable(GL_CULL_FACE);
 	
 	// draw test room
 	skybox_shader->bind();
@@ -127,29 +136,35 @@ void Window::displayCallback()
 	Globals::testRoom.draw(Globals::drawData);
 	Globals::testRoomTex.unbind();
 	skybox_shader->unbind();
-	
+    
 	/* drawing sphere with environmental mapping */
 	envMapping_shader->bind();
-	GLint camPos_loc = glGetUniformLocation(envMapping_shader->getPid(), "camPos");
+	GLint camPos_loc = glGetUniformLocationARB(envMapping_shader->getPid(), "camPos");
 	glUniform3fv(camPos_loc, 1, Globals::camera.getPos().ptr());
 	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
 
+  
 	Globals::testRoomTex.bind();
 	Globals::sphere.draw(Globals::drawData);
+    
 	Globals::testRoomTex.unbind();
 	envMapping_shader->unbind();
 
+   
+    Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
+    
     //Draw the cube!
 	//shader->bind();
    // Globals::cube.draw(Globals::drawData);
+    
+    //glEnable(GL_CULL_FACE);
+    //shadow->renderScene(Globals::group, Globals::emulateDay);
+    //glDisable(GL_CULL_FACE);
 
+    //glTranslatef(5, 5, 10);
 
-	Globals::tree.draw();
 	
-	
-	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
-	
-	
+	 Globals::tree.draw();
 	
 
     //Globals::cube.draw(Globals::drawData);
@@ -180,6 +195,11 @@ void Window::displayCallback()
 void Window::keyboardCallback(unsigned char key, int x, int y)
 {
 	switch (key) {
+            
+        case 27:
+            exit(0);
+            break;
+            
 	case 'A':
 		Globals::tree.angle++;
 		break;
@@ -197,6 +217,28 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 	case 'h':
 		Globals::cam3Dmove_on = !Globals::cam3Dmove_on;
 		break;
+            
+    case 'p':
+        Globals::emulateDay = !Globals::emulateDay;
+        break;
+            
+            
+        case 'l':
+            
+            Globals::camera.moveZoom(-4);
+            break;
+            
+        case '.':
+            Globals::camera.moveZoom(4);
+            break;
+            
+        case ',':
+            Globals::camera.moveLeftRight(-4);
+            break;
+            
+        case '/':
+            Globals::camera.moveLeftRight(4);
+            break;
 
 	case '0':
 		Globals::tree.printLanguage(0);
@@ -210,13 +252,17 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 	case '3':
 		Globals::tree.printLanguage(3);
 		break;
+            
+            default:
+            break;
 	}
 }
 
 void Window::specialKeyCallback(int key, int x, int y)
 {
 	switch (key) {
-	case GLUT_KEY_UP:
+	/*
+     case GLUT_KEY_UP:
 		Globals::camera.moveFoward(Globals::cam3Dmove_on);
 		break;
 	case GLUT_KEY_DOWN:
@@ -228,6 +274,27 @@ void Window::specialKeyCallback(int key, int x, int y)
 	case GLUT_KEY_RIGHT:
 		Globals::camera.moveRight();
 		break;
+     */
+        case GLUT_KEY_LEFT:
+            Globals::camera.orbitTrack(Globals::camera.getUp(), 2);
+            break;
+            
+        case GLUT_KEY_RIGHT:
+            Globals::camera.orbitTrack(Globals::camera.getUp(), -2);
+            
+            //Globals::camera.lookLeftRight(-1);
+            break;
+            
+        case GLUT_KEY_UP:
+            Globals::camera.lookUpDown(-1);
+            break;
+            
+        case GLUT_KEY_DOWN:
+            Globals::camera.lookUpDown(1);
+            break;
+            
+        default:
+            break;
 	}
 }
 
@@ -249,7 +316,7 @@ Vector3 rotateAxis(int x, int y, int width, int height) {
 	dis = (dis < 1.0) ? dis : 1.0;
 
 	//if (Globals::camera.getLookDirec()[2] < 0)
-	vec.set(2, -std::sqrtf(1.001 - dis * dis));
+	vec.set(2, -sqrtf(1.001 - dis * dis));
 
 	vec.normalize();
 

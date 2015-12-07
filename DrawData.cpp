@@ -10,3 +10,11 @@ DrawData::~DrawData(void)
 {
     //
 }
+
+void DrawData::setMatrix(Matrix4 c) {
+    m = &c;
+}
+
+Matrix4 DrawData::getMatrix() {
+    return *m;
+}

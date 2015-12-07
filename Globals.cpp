@@ -18,3 +18,13 @@ bool Globals::cam3Dmove_on = false;
 Tree Globals::tree;
 
 Particle Globals::particle;
+
+
+
+bool Globals::emulateDay = false;
+
+Group* Globals::group = new Group();
+
+OBJObject Globals::bunny("bunny.obj");
+
+//Shader Globals::skybox("skybox.vert", "skybox.frag", true);

@@ -7,7 +7,7 @@
 #include "Vector3.h"
 
 
-double M_PI = 3.14159265358979323846;
+//double M_PI = 3.14159265358979323846;
 Matrix4::Matrix4()
 {
     std::memset(m, 0, sizeof(m));
