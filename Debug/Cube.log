@@ -1,2 +1,26 @@
-﻿  Window.cpp
+﻿  main.cpp
+  Window.cpp
+  Sphere.cpp
+  RoomCube.cpp
+  OBJObject.cpp
+  Matrix4.cpp
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(235): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(236): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(237): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(430): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(432): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(433): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(435): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(449): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(450): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(452): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\diego\ucsd\cse 167\finalproject\matrix4.cpp(453): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Light.cpp
+  Globals.cpp
+  Drawable.cpp
+  DrawData.cpp
+  Cube.cpp
+  Generating Code...
+  LINK : Debug\Cube.exe not found or not built by the last incremental link; performing full link
+CubeMapTexture.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   Cube.vcxproj -> E:\diego\ucsd\CSE 167\FinalProject\Debug\Cube.exe
