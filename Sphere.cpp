@@ -21,7 +21,7 @@ void Sphere::draw(DrawData& data)
     glMatrixMode(GL_MODELVIEW);
     
     glPushMatrix();
-    glMultMatrixf(toWorld.ptr());
+   // glMultMatrixf(toWorld.ptr());
     
     glutSolidSphere(radius, slices, stacks);
     

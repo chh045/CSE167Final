@@ -1,4 +1,4 @@
-#version 130
+//#version 130
 // fragment shader
 
 // Once again, this preprocessor will only fail if your OpenGL version
@@ -48,7 +48,7 @@ void main(){
     //vec2 st = gl_TexCoord[0].st;
     // Find out texture color at that coordinate
     //vec4 textureColor = texture2D(textureSampler, st);
-    gl_FragColor = texture(skybox, R);
+    gl_FragColor = textureCube(skybox, R);
     // Set fragment color to the color we want
     //gl_FragColor = manipulate(textureColor);
     

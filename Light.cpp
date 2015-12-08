@@ -1,6 +1,9 @@
-#include "Light.h"
-#include "Window.h"
+
 #include <iostream>
+#include "Light.h"
+//#include "Window.h"
+#include "Vector3.h"
+
 
 #ifdef __APPLE__
     #include <GLUT/glut.h>
@@ -60,4 +63,8 @@ void Light::unbind(void)
 {
     glDisable(GL_LIGHT0 + bindID);
     bindID = -1;
+}
+
+Vector3 Light::getPosition(){
+    return position.toVector3();
 }

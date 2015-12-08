@@ -1,35 +1,33 @@
-﻿Build started 12/5/2015 3:29:12 AM.
-     1>Project "C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Cube.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\glut\glut-3.7.6-bin\GLEE" /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-       Link:
-         F:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Release\Cube.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\glut\glut-3.7.6-bin\GLEE" legacy_stdio_definitions.lib GLee.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libc.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"Release\Cube.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Release\Cube.lib" /MACHINE:X86 /SAFESEH Release\CubeMapTexture.obj
-         Release\main.obj
-         Release\Camera.obj
-         Release\Color.obj
-         Release\Cube.obj
-         Release\Light.obj
-         Release\Material.obj
-         Release\Matrix4.obj
-         Release\Drawable.obj
-         Release\DrawData.obj
-         Release\Particle.obj
-         Release\RoomCube.obj
-         Release\Shader.obj
-         Release\Sphere.obj
-         Release\Texture.obj
-         Release\UpdateData.obj
-         Release\Vector3.obj
-         Release\Vector4.obj
-         Release\Window.obj
-         Release\Globals.obj
-         Release\MathTestBench.obj
-         Release\OBJObject.obj
-     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
-         Cube.vcxproj -> C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Release\Cube.exe
-     1>Done Building Project "C:\Users\Louis\Documents\Courses\167-Computer Graphics\Final Project\CSE167Final\Cube.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:01.97
+﻿  CubeMapTexture.cpp
+CubeMapTexture.cpp(108): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+CubeMapTexture.cpp(126): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+  Light.cpp
+  ShadowMapping.cpp
+ShadowMapping.cpp(337): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+ShadowMapping.cpp(407): warning C4101: 'group': unreferenced local variable
+  Tree.cpp
+Tree.cpp(31): warning C4018: '<': signed/unsigned mismatch
+Tree.cpp(78): warning C4018: '<': signed/unsigned mismatch
+Tree.cpp(93): warning C4018: '<': signed/unsigned mismatch
+  Window.cpp
+  Globals.cpp
+  OBJObject.cpp
+OBJObject.cpp(87): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+OBJObject.cpp(108): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+OBJObject.cpp(110): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+OBJObject.cpp(117): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+OBJObject.cpp(125): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+OBJObject.cpp(144): warning C4018: '<': signed/unsigned mismatch
+OBJObject.cpp(177): warning C4018: '<': signed/unsigned mismatch
+OBJObject.cpp(187): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
+  Cube.vcxproj -> E:\diego\ucsd\CSE 167\FinalProject\Release\Cube.exe

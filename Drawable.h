@@ -7,7 +7,6 @@
 #include "UpdateData.h"
 #include "Material.h"
 #include <float.h>
-#include <math.h>
 #include <vector>
 
 

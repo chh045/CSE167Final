@@ -1,7 +1,9 @@
 #ifndef CSE167_CubeMapTexture_h
 #define CSE167_CubeMapTexture_h
 
-#include <vector>
+
+
+
 
 class CubeMapTexture
 {

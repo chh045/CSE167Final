@@ -32,7 +32,8 @@ public:
     
     void bind(int);
     void unbind(void);
-    
+    Vector3 getPosition();
+
 };
 
 #endif

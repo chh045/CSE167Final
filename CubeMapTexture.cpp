@@ -1,10 +1,23 @@
+/*            :::::::::::WARNING::::::::::::::
+** PLEASE, DO NOT INCLUDE SAME HEADER MORE THAN ONCE.
+** PLEASE, GLEE.H ALWAYS DEFINED BEFORE GLUT.H
+** PLEASE, ADD ONLY HEADERS IN H-FILES IF YOU NEED TO USE IN THE HEADER
+** OTHERWISE, PUT IT IN .CPP FILE
+**/
+
+
+#include <vector>
 #include <iostream>
+
 #include "CubeMapTexture.h"
 
+
+
 #ifdef __APPLE__
-	#include <GLUT/glut.h>
+#include <OpenGL/gl3.h>
+#include <OpenGL/glext.h>
 #else
-	#include "glee.h"
+#include "glee.h"
 #endif
 
 // Loads a cubemap texture from 6 individual texture faces
@@ -32,7 +45,6 @@ CubeMapTexture::CubeMapTexture(
 	GLuint tID;
 	glGenTextures(1, &tID); // this func ensures the id is unique 
 	textureID = tID;
-
 	// set the currentTextureUnit to be default, could be skipped?
 	glActiveTexture(GL_TEXTURE0);
 
@@ -41,6 +53,8 @@ CubeMapTexture::CubeMapTexture(
 
 	// bind
 	glBindTexture(GL_TEXTURE_CUBE_MAP, tID);
+
+	//glUniform1i(0, 0);
 
 	for (GLuint i = 0; i < fv.size(); i++)
 	{

@@ -1,13 +1,9 @@
+
+
+//#include "Window.h"
+//#include "math.h"
+
 #include "RoomCube.h"
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-#include "Window.h"
-#include "math.h"
 
 RoomCube::RoomCube(float roomLength) : Drawable()
 {
@@ -27,7 +23,8 @@ void RoomCube::draw(DrawData& data)
 
 	//Push a save state onto the matrix stack, and multiply in the toWorld matrix
 	glPushMatrix();
-	glMultMatrixf(toWorld.ptr());
+	//glMultMatrixf(toWorld.ptr());
+
 
 	//Make cube!
 	//Note: The glBegin, and glEnd should always be as close to the glNormal/glVertex calls as possible

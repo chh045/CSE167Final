@@ -1,4 +1,4 @@
-#include "Cube.h"
+/*#include "Cube.h"
 
 #ifdef __APPLE__
     #include <GLUT/glut.h>
@@ -108,4 +108,48 @@ void Cube::spin(float radians)
     
     toWorld = toWorld * rotation;
 }
+ */
+#include "Window.h"
+#include "Cube.h"
+#include "math.h"
+
+
+
+#ifdef _WIN32
+#include <GL/glut.h>
+#else
+#include <GLUT/glut.h>
+#endif
+
+
+Cube::Cube(float s) : Geode()
+{
+    size = s;
+}
+
+Cube::~Cube()
+{
+    //Delete any dynamically allocated memory/objects here
+}
+
+
+
+void Cube::render()
+{
+    materials.apply();
+    //glColor3f(0.1, 0, 0);
+    glutSolidCube(size);
+    
+    
+}
+
+
+void Cube::update(UpdateData& data)
+{
+    //
+}
+
+
+
+
 

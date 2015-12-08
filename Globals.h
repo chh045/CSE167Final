@@ -1,17 +1,21 @@
+
+
 #ifndef CSE167_Globals_h
 #define CSE167_Globals_h
 
-#include "Camera.h"
+#include "Shader.h"
+#include "CubeMapTexture.h"
+
+#include "Texture.h"
+#include "Tree.h"
+#include "Particle.h"
 #include "Cube.h"
 #include "Sphere.h"
 #include "Light.h"
 #include "DrawData.h"
-#include "UpdateData.h"
-#include "CubeMapTexture.h"
+#include "OBJObject.h"
+#include "Group.h"
 #include "RoomCube.h"
-#include "Tree.h"
-#include "Particle.h"
-
 
 class Globals
 {
@@ -34,7 +38,13 @@ public:
 	static Tree tree;
 
 	static Particle particle;
-
+    
+    
+    static bool emulateDay;
+    static Group* group;
+    static OBJObject bunny;
+    
+    static Shader skybox;
 };
 
 #endif

@@ -66,22 +66,35 @@ void Camera::update()
 }
 
 void Camera::rotate(Vector3 axis, float angle) {
-	Vector3 old_e = e;
 
-	// translate d and e s.t. e is at the origin
-	e = e - old_e;
-	d = d - old_e;
+	// project e and d into camera space
+	Vector3 e_cam = ci * e;
+	Vector3 d_cam = ci * d;
 
-	// rotate d around e (also the origin)
+	// translate e_cam and d_cam s.t. e_cam is at origin
+	Vector3 old_e_cam = e_cam;
+	e_cam = e_cam - old_e_cam;
+	d_cam = d_cam - old_e_cam;
+
+	// rotate d_cam around e_cam (also the origin) (in camera space
 	Matrix4 m;
-	d = m.makeRotateArbitrary(axis, angle) * d;
+	d_cam = m.makeRotateArbitrary(axis, angle) * d_cam;
 
-	// translate back
-	e = e + old_e;
-	d = d + old_e;
+	// translate d_cam and e_cam back
+	e_cam = e_cam + old_e_cam;
+	d_cam = d_cam + old_e_cam;
 
-	e.print("e is ");
-	d.print("d is ");
+	// project back to world space
+	e = c * e_cam;
+	d = c * d_cam;
+
+	// re calculate up
+	Vector3 true_up(0, 1, 0);
+	Vector3 right = (d - e).cross(true_up);
+	up = right.cross(d - e).normalize();
+
+	//e.print("e is ");
+	//d.print("d is ");
 
 	update();
 }
@@ -155,3 +168,69 @@ void Camera::moveRight() {
 
 	update();
 }
+
+
+
+
+//--------------------------------------------------
+
+
+
+void Camera::moveLeftRight(float value) {
+    Matrix4 move;
+    this->e.set(0, e[0] + value);
+    this->d.set(0, d[0] + value);
+    this->set(e, d, up);
+}
+void Camera::moveUpDown(float value) {
+    Matrix4 move;
+    float test = e.operator[](1);
+    float test2 = d.operator[](1);
+    this->e.set(1, test + value);
+    this->d.set(1, test2 + value);
+    this->set(e, d, up);
+}
+void Camera::lookLeftRight(float value) {
+    Matrix4 move;
+    this->d.set(0, d.operator[](0) + value);
+    this->set(e, d, up);
+}
+void Camera::lookUpDown(float value) {
+    Matrix4 move;
+    float test = e.operator[](1);
+    this->e.set(1, test + value);
+    this->set(e, d, up);
+    
+}
+void Camera::moveZoom(float value) {
+    Matrix4 move;
+    float test = e.operator[](2);
+    float test2 = d.operator[](2);
+    this->e.set(2, test + value);
+    this->d.set(2, test2 + value);
+    this->set(e, d, up);
+}
+
+void Camera::orbitTrack(Vector3 v, float angle) {
+    Matrix4 orb;
+    float pi = 3.1415;
+    float rads = angle * (pi / 180.0);
+    orb.makeRotateArbitrary(v, rads);
+    Vector3 lookAt = d - e;
+    Vector3 newLookAt = orb * lookAt;
+    d = e + newLookAt;
+    this->set(e, d, up);
+}
+
+Vector3 Camera::getUp(){
+    return up;
+}
+Vector3 Camera::getPosition(){
+    return e;
+}
+Vector3 Camera::getLookAt(){
+    return d;
+}
+
+
+

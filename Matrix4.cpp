@@ -7,7 +7,7 @@
 #include "Vector3.h"
 
 
-double M_PI = 3.14159265358979323846;
+//double M_PI = 3.14159265358979323846;
 Matrix4::Matrix4()
 {
     std::memset(m, 0, sizeof(m));
@@ -427,7 +427,7 @@ Matrix4 Matrix4::makePerspectiveProjection(float fov, float width, float height,
     
     // input fov is in degree, convert it to radians
     float aspect = width/height;
-    float fovToRadians = fov * M_PI/180;
+    float fovToRadians = fov * 3.1415/180;
     
     m[0][0] = 1.0/(aspect*tan(fovToRadians/2.0));
     m[1][1] = 1.0/tan(fovToRadians/2.0);

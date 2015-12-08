@@ -37,6 +37,21 @@ public:
 	void moveBack(bool changeY_on);
 	void moveLeft(void);
 	void moveRight(void);
+    
+    
+    
+    
+    void moveLeftRight(float);
+    void moveUpDown(float);
+    void lookLeftRight(float);
+    void lookUpDown(float);
+    void moveZoom(float);
+    
+    void orbitTrack(Vector3 v, float angle);
+    
+    Vector3 getUp();
+    Vector3 getPosition();
+    Vector3 getLookAt();
 };
 
 #endif

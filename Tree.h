@@ -2,6 +2,7 @@
 #define Tree_h
 #endif
 
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,6 +13,7 @@
 #include <GL/glut.h>
 #endif
 
+
 using namespace std;
 
 const float ANGLE = 42.0;
@@ -20,7 +22,8 @@ const int MAX_DEPTH = 5;
 class Tree
 {
 private:
-	string rule = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
+	//string rule = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
+	string rule = "F[+YL][-YL][++YL][+++YL][--YL][---YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
 	float lineLength = 0.5; 
 	int lineWidth = 3;
 	std::vector<string> language;

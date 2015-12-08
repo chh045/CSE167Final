@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B7511A221C1577490019B44D /* CubeMapTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A191C1577490019B44D /* CubeMapTexture.cpp */; };
+		B7511A231C1577490019B44D /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A1B1C1577490019B44D /* Particle.cpp */; };
+		B7511A241C1577490019B44D /* RoomCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A1D1C1577490019B44D /* RoomCube.cpp */; };
+		B7511A251C1577490019B44D /* Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A1F1C1577490019B44D /* Tree.cpp */; };
+		B7511A321C157A040019B44D /* ShadowMapping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A2B1C157A040019B44D /* ShadowMapping.cpp */; };
+		B7511A331C157A040019B44D /* Geode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A2F1C157A040019B44D /* Geode.cpp */; };
+		B7511A341C157A040019B44D /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A301C157A040019B44D /* Node.cpp */; };
+		B7511A371C1582F70019B44D /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7511A351C1582F70019B44D /* Group.cpp */; };
 		D40AFA801AD1E2E7008D61CC /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D40AFA7E1AD1E2E7008D61CC /* Shader.cpp */; };
 		D42FFC311AAFCC9C006F8E9C /* Matrix4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42FFC2A1AAFCC9C006F8E9C /* Matrix4.cpp */; };
 		D42FFC321AAFCC9C006F8E9C /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42FFC2C1AAFCC9C006F8E9C /* Window.cpp */; };
@@ -43,6 +51,29 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B7511A191C1577490019B44D /* CubeMapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeMapTexture.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A1A1C1577490019B44D /* CubeMapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeMapTexture.h; sourceTree = SOURCE_ROOT; };
+		B7511A1B1C1577490019B44D /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A1C1C1577490019B44D /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = SOURCE_ROOT; };
+		B7511A1D1C1577490019B44D /* RoomCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomCube.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A1E1C1577490019B44D /* RoomCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomCube.h; sourceTree = SOURCE_ROOT; };
+		B7511A1F1C1577490019B44D /* Tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tree.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A201C1577490019B44D /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = SOURCE_ROOT; };
+		B7511A211C1577490019B44D /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = SOURCE_ROOT; };
+		B7511A261C1577B00019B44D /* envMapping.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = envMapping.frag; sourceTree = SOURCE_ROOT; };
+		B7511A271C1577B00019B44D /* envMapping.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = envMapping.vert; sourceTree = SOURCE_ROOT; };
+		B7511A281C1577B00019B44D /* skybox.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = skybox.frag; sourceTree = SOURCE_ROOT; };
+		B7511A291C1577B00019B44D /* skybox.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = skybox.vert; sourceTree = SOURCE_ROOT; };
+		B7511A2A1C157A040019B44D /* ShadowMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowMapping.h; sourceTree = SOURCE_ROOT; };
+		B7511A2B1C157A040019B44D /* ShadowMapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowMapping.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A2C1C157A040019B44D /* Geode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geode.h; sourceTree = SOURCE_ROOT; };
+		B7511A2D1C157A040019B44D /* shadow_map.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadow_map.frag; sourceTree = SOURCE_ROOT; };
+		B7511A2E1C157A040019B44D /* shadow_map.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shadow_map.vert; sourceTree = SOURCE_ROOT; };
+		B7511A2F1C157A040019B44D /* Geode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geode.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A301C157A040019B44D /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A311C157A040019B44D /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = SOURCE_ROOT; };
+		B7511A351C1582F70019B44D /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = SOURCE_ROOT; };
+		B7511A361C1582F70019B44D /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = SOURCE_ROOT; };
 		D40AFA7E1AD1E2E7008D61CC /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = SOURCE_ROOT; };
 		D40AFA7F1AD1E2E7008D61CC /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = SOURCE_ROOT; };
 		D42FFC1E1AAFC90E006F8E9C /* CSE167Final */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CSE167Final; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,8 +153,12 @@
 				D42FFC631AB67F52006F8E9C /* main.cpp */,
 				D42FFC2C1AAFCC9C006F8E9C /* Window.cpp */,
 				D42FFC301AAFCC9C006F8E9C /* Window.h */,
+				B7511A2A1C157A040019B44D /* ShadowMapping.h */,
+				B7511A2B1C157A040019B44D /* ShadowMapping.cpp */,
 				D42FFC651AB68012006F8E9C /* Globals.cpp */,
 				D42FFC5F1AB672A8006F8E9C /* Globals.h */,
+				B7511A351C1582F70019B44D /* Group.cpp */,
+				B7511A361C1582F70019B44D /* Group.h */,
 				D42FFC2D1AAFCC9C006F8E9C /* Cube.cpp */,
 				D42FFC2F1AAFCC9C006F8E9C /* Cube.h */,
 				D42FFC441AAFCF71006F8E9C /* Sphere.cpp */,
@@ -153,6 +188,25 @@
 				D42FFC501AAFCF71006F8E9C /* Vector4.cpp */,
 				D42FFC511AAFCF71006F8E9C /* Vector4.h */,
 				D42FFC2A1AAFCC9C006F8E9C /* Matrix4.cpp */,
+				B7511A261C1577B00019B44D /* envMapping.frag */,
+				B7511A2C1C157A040019B44D /* Geode.h */,
+				B7511A2D1C157A040019B44D /* shadow_map.frag */,
+				B7511A2E1C157A040019B44D /* shadow_map.vert */,
+				B7511A2F1C157A040019B44D /* Geode.cpp */,
+				B7511A301C157A040019B44D /* Node.cpp */,
+				B7511A311C157A040019B44D /* Node.h */,
+				B7511A271C1577B00019B44D /* envMapping.vert */,
+				B7511A281C1577B00019B44D /* skybox.frag */,
+				B7511A291C1577B00019B44D /* skybox.vert */,
+				B7511A191C1577490019B44D /* CubeMapTexture.cpp */,
+				B7511A1A1C1577490019B44D /* CubeMapTexture.h */,
+				B7511A1B1C1577490019B44D /* Particle.cpp */,
+				B7511A1C1C1577490019B44D /* Particle.h */,
+				B7511A1D1C1577490019B44D /* RoomCube.cpp */,
+				B7511A1E1C1577490019B44D /* RoomCube.h */,
+				B7511A1F1C1577490019B44D /* Tree.cpp */,
+				B7511A201C1577490019B44D /* Tree.h */,
+				B7511A211C1577490019B44D /* Utility.h */,
 				D42FFC2B1AAFCC9C006F8E9C /* Matrix4.h */,
 				D4FEE23D1AC895C6006CF92D /* MathTestBench.cpp */,
 				D4FEE23E1AC895C6006CF92D /* MathTestBench.h */,
@@ -213,12 +267,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				D42FFC661AB68012006F8E9C /* Globals.cpp in Sources */,
+				B7511A371C1582F70019B44D /* Group.cpp in Sources */,
+				B7511A331C157A040019B44D /* Geode.cpp in Sources */,
 				D42FFC5C1AAFCF71006F8E9C /* Texture.cpp in Sources */,
 				D42FFC5A1AAFCF71006F8E9C /* UpdateData.cpp in Sources */,
 				D42FFC5B1AAFCF71006F8E9C /* DrawData.cpp in Sources */,
+				B7511A321C157A040019B44D /* ShadowMapping.cpp in Sources */,
 				D42FFC581AAFCF71006F8E9C /* Light.cpp in Sources */,
 				D42FFC331AAFCC9C006F8E9C /* Cube.cpp in Sources */,
 				D4D588151ACE591500D1F802 /* OBJObject.cpp in Sources */,
+				B7511A341C157A040019B44D /* Node.cpp in Sources */,
+				B7511A251C1577490019B44D /* Tree.cpp in Sources */,
+				B7511A231C1577490019B44D /* Particle.cpp in Sources */,
 				D42FFC541AAFCF71006F8E9C /* Drawable.cpp in Sources */,
 				D42FFC531AAFCF71006F8E9C /* Color.cpp in Sources */,
 				D42FFC521AAFCF71006F8E9C /* Vector3.cpp in Sources */,
@@ -229,8 +289,10 @@
 				D4FEE23F1AC895C6006CF92D /* MathTestBench.cpp in Sources */,
 				D42FFC5E1AAFCF71006F8E9C /* Vector4.cpp in Sources */,
 				D42FFC591AAFCF71006F8E9C /* Sphere.cpp in Sources */,
+				B7511A221C1577490019B44D /* CubeMapTexture.cpp in Sources */,
 				D40AFA801AD1E2E7008D61CC /* Shader.cpp in Sources */,
 				D42FFC311AAFCC9C006F8E9C /* Matrix4.cpp in Sources */,
+				B7511A241C1577490019B44D /* RoomCube.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
