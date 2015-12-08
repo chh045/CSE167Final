@@ -23,9 +23,13 @@ class Tree
 {
 private:
 	//string rule = "F[+YL][-YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
-	string rule = "F[+YL][-YL][++YL][+++YL][--YL][---YL]YL";  // F/Y = branch   +/-  = rotate    L = leaf
-	float lineLength = 0.5; 
-	int lineWidth = 3;
+	string rule = "F[+YL][-YL][++YL][+++YL][++++YL][--YL][---YL][----YL][+++++YL][-----YL]YL";  // type 1  ( good lengths = 0.1, 0.2 )
+	//string rule = "F[+YL][-YL][++YL][+++YL][--YL][---YL]YL";  // type 1  ( good lengths = 0.1, 0.2 )
+	//string rule = "F[+YL]F[-YL]+YL";  // type 2 ( good lengths = 0.1, 0.2 )
+	//string rule = "F[[YL]++YL]+F[+FL]-YL";  // widht 10 looks good
+
+	float lineLength = 0.2; 
+	int lineWidth = 10;
 	std::vector<string> language;
 
 public:

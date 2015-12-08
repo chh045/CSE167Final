@@ -350,15 +350,16 @@ void Window::mouseMotion(int x, int y)
 void Window::passiveMouseMotion(int x, int y) {
 
 	// rotate in camera space (z axis is out from the screen)
-	Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
+	/*Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
 	Vector3 neg_z(0, 0, -1);
 
 	Vector3 rot_axis = neg_z.cross(axis);
-
 	float velocity = (axis - neg_z).magnitude();
 
 	if (velocity > 0.001) {
 		float rot_angle = velocity * 0.05;
 		Globals::camera.rotate(rot_axis, rot_angle);
-	}
+	}*/
+
+	gluLookAt(1.0, 0.0, 0.0, x, y, 0, 0.0, 1.0, 0.0);
 }

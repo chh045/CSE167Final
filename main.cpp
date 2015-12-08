@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     glutIdleFunc(Window::idleCallback);
     //Register the callback for the keyboard function keys
     //Register the callback for the mouse passive motion
-	//glutPassiveMotionFunc(Window::passiveMouseMotion);
+	glutPassiveMotionFunc(Window::passiveMouseMotion);
 	glutKeyboardFunc(Window::keyboardCallback);
 	glutSpecialFunc(Window::specialKeyCallback);
 	//Register the callback for the mouse
