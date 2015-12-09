@@ -32,6 +32,10 @@ ShadowMapping* shadow;
 Shader* skybox_shader;
 Shader* envMapping_shader;
 
+
+// For frame
+int frame = 0, time, timebase = 0;
+
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
 extern const int MAX_DEPTH;
 
@@ -41,6 +45,8 @@ void Window::initialize(void)
 	Vector4 lightPos(0.0, 10.0, 15.0, 1.0);
 	Globals::light.position = lightPos;
 	Globals::light.quadraticAttenuation = 0.02;
+
+
 
 	//Initialize cube matrix:
 	//Globals::cube.toWorld.identity();
@@ -139,10 +145,14 @@ void Window::displayCallback()
 	glEnable(GL_CULL_FACE);
 	shadow->bind();
 	shadow->renderScene(Globals::group, Globals::emulateDay);
-	glCullFace(GL_BACK);
+	glDisable(GL_CULL_FACE);
+
+	//glCullFace(GL_BACK);
 	shadow->drawObjects(Globals::group);
 	shadow->unbind();
-	glDisable(GL_CULL_FACE);
+//	glDisable(GL_CULL_FACE);
+
+
 
 
 	/* drawing sphere with environmental mapping */
@@ -217,6 +227,14 @@ void Window::displayCallback()
 	Globals::wallTex->unbind();
 
 	//Globals::cube.draw(Globals::drawData);
+
+	frame++;
+	time = glutGet(GLUT_ELAPSED_TIME);
+	if (time - timebase > 1000) {
+			std::cout << "FPS: " << frame*1000.0 / (time - timebase) << std::endl;
+		timebase = time;
+		frame = 0;
+	}
 
 	glEnable(GL_LIGHTING);
 

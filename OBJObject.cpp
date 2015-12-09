@@ -74,7 +74,7 @@ void OBJObject::update(UpdateData& data)
 
 void OBJObject::parse(std::string& filename)
 {
-    
+	objName = filename;
     FILE* fp;     // file pointer
     float x,y,z;  // vertex coordinates
     float xn, yn, zn; // normal coordinates
@@ -117,7 +117,7 @@ void OBJObject::parse(std::string& filename)
             fscanf(fp, "%f %f %f", &xn, &yn, &zn);
             normals->push_back(new Vector3(xn, yn, zn));
         }
-        else if ((c1 == 'f') && (c2 == ' ')){
+        /*else if ((c1 == 'f') && (c2 == ' ')){
             
             
             
@@ -132,7 +132,33 @@ void OBJObject::parse(std::string& filename)
                 
             }
             faces->push_back(facees);
-        }
+        }*/
+		else if ((c1 == 'f') && (c2 == ' ')) {
+
+			////
+			fscanf(fp, "%d%c", &indicesVertex[0], &c3);
+
+			if (c3 == ' ') {
+				fscanf(fp, "%d %d", &indicesVertex[1],
+					&indicesVertex[2]);
+			}
+
+			else if (c3 == '/'){
+				fscanf(fp, "/%d %d//%d %d//%d", &indicesNormal[0], &indicesVertex[1], &indicesNormal[1],
+					&indicesVertex[2], &indicesNormal[2]);
+		}
+			////
+
+			Face* facees = new Face;
+			for (int i = 0; i< 3; i++) {
+				facees->vertexIndices[i] = indicesVertex[i] - 1;
+			//	if (facees->vertexIndices[i] <= 0)
+			//		std::cout << "YEAAA is: " << facees->vertexIndices[i] << std::endl;
+				if(!normals->empty())
+				facees->normalIndices[i] = indicesNormal[i] - 1;
+			}
+			faces->push_back(facees);
+		}
     }
     
     load();
@@ -140,15 +166,58 @@ void OBJObject::parse(std::string& filename)
 }
 
 void OBJObject::load(){
-    
+		
+	float t, r, g, b;
     for (int i = 0; i < faces->size(); i++){
+		t = 0;
+		r = 0;
+		g = 0;
+		b = 0;
         for (int j = 0; j< 3; j++){
+			t = 0;
             for (int k = 0; k< 3; k++){
-                allVertex.push_back(vertices->at(faces->at(i)->vertexIndices[j])->operator[](k));
-                allNormal.push_back(normals->at(faces->at(i)->normalIndices[j])->operator[](k));
+
+			
+			     allVertex.push_back(vertices->at(faces->at(i)->vertexIndices[j])->operator[](k));	
+
+				
+
+				if (!normals->empty()) {
+					allNormal.push_back(normals->at(faces->at(i)->normalIndices[j])->operator[](k));
+					// magic work
+					t += normals->at(faces->at(i)->normalIndices[j])->operator[](k) * normals->at(faces->at(i)->normalIndices[j])->operator[](k);
+					// work done
+				
+					//allColor.push_back(normals->at(faces->at(i)->normalIndices[j])->operator[](k));
+				}
+
+				else {
+					
+					allColor.push_back(vertices->at(faces->at(i)->vertexIndices[j])->operator[](k));
+				}
+				
+
             }
+			// magic work //
+			if (!normals->empty()) {
+				t = sqrtf(t);
+				r = normals->at(faces->at(i)->normalIndices[j])->operator[](0) / t;
+				g = normals->at(faces->at(i)->normalIndices[j])->operator[](1) / t;
+				b = normals->at(faces->at(i)->normalIndices[j])->operator[](2) / t;
+				allColor.push_back(r);
+				allColor.push_back(g);
+				allColor.push_back(b);
+			}
+			// done magic work
         }
     }
+
+	std::cout << "size of faces: "<<faces->size() << std::endl;
+	std::cout << "size of allVertex: " << allVertex.size() << std::endl;
+	std::cout << "size of vertices: " << vertices->size() << std::endl;
+	std::cout << "check: " << faces->at(243)->vertexIndices[2] << std::endl;
+	//std::cout << "size of allVertex: " << faces->size() << std::endl;
+
 }
 
 //Split functions from the interwebs
@@ -206,14 +275,29 @@ void OBJObject::normalize(){
 
 void OBJObject::render(){
     
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glNormalPointer(GL_FLOAT, 0, allNormal.data());
-    glVertexPointer(3, GL_FLOAT, 0, allVertex.data());
-    glDrawArrays(GL_TRIANGLES, 0, allVertex.size()/3);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-}
+	if (normals->empty()) {
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glVertexPointer(3, GL_FLOAT, 0, allVertex.data());
+		glColorPointer(3, GL_FLOAT, 0, allColor.data());
+		glDrawArrays(GL_TRIANGLES, 0, allVertex.size() / 3);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+	}
+
+	else {
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glNormalPointer(GL_FLOAT, 0, allNormal.data());
+		glVertexPointer(3, GL_FLOAT, 0, allVertex.data());
+		glEnableClientState(GL_COLOR_ARRAY);
+		glColorPointer(3, GL_FLOAT, 0, allColor.data());
+		glDrawArrays(GL_TRIANGLES, 0, allVertex.size() / 3);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+	}
+	}
 
 
 /*

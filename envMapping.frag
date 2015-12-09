@@ -25,14 +25,12 @@ void main(){
 
    vec3 finalColor = vec3(0.0, 0.0, 0.9);
      
-   // Loop through the 8 lights supported by OpenGL.
-   // Now you know what the light IDs are used for!
+  
    for (int i = 0; i < 8; i++){
       // Calculate the light direction
       lightDirection = gl_LightSource[i].position.xyz - position.xyz;
 
-      // Determine if the light is in front of the surface.
-      // If it is, I want to highlight it yellow
+   
       if(dot(normal, lightDirection) >= 0.0)
          finalColor = vec3(0.9, 0.9, 0.0);
    }

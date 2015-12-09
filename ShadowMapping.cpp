@@ -246,6 +246,8 @@ void ShadowMapping::drawObjects(Group* group)
 	glEnd();*/
 	
     // Ground
+
+	
 	Globals::grdTex->bind();
     glColor4f(0.3f, 0.3f, 0.3f, 1);
     glBegin(GL_QUADS);
@@ -259,7 +261,7 @@ void ShadowMapping::drawObjects(Group* group)
     glVertex3f(-4000.0,d,-10000.0);
     glEnd();
 	Globals::grdTex->unbind();
-
+	
 	/*
 	int length = Globals::grd_length;
 	//Globals::grdTex->bind();
@@ -309,11 +311,23 @@ void ShadowMapping::drawObjects(Group* group)
     endTranslate();
     
     
-    startTranslate(3,-0.5,8);
-    //Globals::bunny.render();
+    startTranslate(-3,-0.5,8);
+    Globals::girl.render();
     endTranslate();
     
+	startTranslate(3, -0.5, 8);
+	Globals::bunny.render();
+	endTranslate();
 
+	startTranslate(10, -0.5, 8);
+	Globals::house.render();
+	endTranslate();
+
+	startTranslate(-7, -0.5, 8);
+	Globals::monster.render();
+	endTranslate();
+
+	//Globals::girl.render();
 	
     
 }
@@ -451,11 +465,10 @@ void ShadowMapping::bind()
 {
 	if (currentlyBoundShadowID != shadowShaderId)
 	{
-		//Group* group;
 		currentlyBoundShadowID = shadowShaderId;
 		glUseProgramObjectARB(shadowShaderId);
-		glBindTexture(GL_TEXTURE_2D, depthTextureId); 
-		glActiveTextureARB(GL_TEXTURE7_ARB);
+		glBindTexture(GL_TEXTURE_2D, depthTextureId);
+		glActiveTextureARB(GL_TEXTURE1_ARB);  // active
 	}
 }
 
@@ -464,7 +477,7 @@ void ShadowMapping::unbind()
 	if (currentlyBoundShadowID != NULL)
 	{
 		currentlyBoundShadowID = NULL;
-		glActiveTextureARB(GL_TEXTURE0_ARB);
+		glActiveTextureARB(GL_TEXTURE0_ARB);  // active
 	    glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgramObjectARB(0);
 	}

@@ -25,6 +25,7 @@ class OBJObject : public Drawable
 protected:
     
     //Storage vectors
+	std::string objName;
     std::vector<Vector3*>* vertices;
     std::vector<Vector3*>* normals;
     std::vector<Vector3*>* colors;
@@ -32,7 +33,8 @@ protected:
     
     std::vector<float> allVertex;
     std::vector<float> allNormal;
-    
+	std::vector<float> allColor;
+
     std::vector<Vector3> rasterizeVertices;
     std::vector<Vector3> rasterizeNormals;
     

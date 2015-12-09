@@ -17,6 +17,7 @@
 #include "Group.h"
 #include "RoomCube.h"
 
+
 class Globals
 {
     
@@ -51,7 +52,9 @@ public:
     static bool emulateDay;
     static Group* group;
     static OBJObject bunny;
-    
+	static OBJObject girl;
+	static OBJObject house;
+	static OBJObject monster;
     static Shader skybox;
 };
 

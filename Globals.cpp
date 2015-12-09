@@ -34,4 +34,10 @@ Group* Globals::group = new Group();
 
 OBJObject Globals::bunny("bunny.obj");
 
+OBJObject Globals::girl("girl.obj");
+
+OBJObject Globals::house("house.obj");
+
+OBJObject Globals::monster("monster.obj");
+
 Shader Globals::skybox("skybox.vert", "skybox.frag", true);

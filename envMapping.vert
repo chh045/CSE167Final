@@ -11,25 +11,16 @@ varying vec3 normal;
 
 // Oh look, this looks just like C
 void main(){
-   // This transforms the normal into world coordinates
-   // gl_NormalMatrix is the transpose of the inverse of the modelViewMatrix
-   // gl_Normal is whatever you last passed into glNormal*
-   
-   //normal = normalize(gl_NormalMatrix * gl_Normal);
 
    normal = normalize(gl_Normal);
    
-   // This transforms the vertex into world coordinates
-   // gl_ModelViewMatrix is whatever matrix that's on top of the GL_MODELVIEW stack
+ 
    position = gl_ModelViewMatrix * gl_Vertex;
 
-   // Determine the projection of the vertex.
+ 
    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
    
-   //gl_TexCoord[0] = gl_MultiTexCoord0;
+
    
-   // These last two lines should be deleted. I hope you didn't
-   // just blindly copy and paste things.
-   //vec4 bogus = vec4(gl_Vertex.x * gl_Vertex.x, 0.0 - gl_Vertex.y, 0.0, 1.0); 
-   //gl_Position = gl_ModelViewProjectionMatrix * bogus;
+
 }
