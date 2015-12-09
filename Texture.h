@@ -20,7 +20,7 @@ public:
     static Texture* emptyTexture;
     
     Texture(void);
-    Texture(const char* filename);
+    Texture(const char* filename, bool repeat_on);
     virtual ~Texture(void);
     
     void bind(void);

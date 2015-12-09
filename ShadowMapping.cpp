@@ -234,24 +234,70 @@ void ShadowMapping::endTranslate()
 
 void ShadowMapping::drawObjects(Group* group)
 {
-
+	float d = Globals::grd_depth;
+	/*
+	// Ground
+	glColor4f(0.3f, 0.3f, 0.3f, 1);
+	glBegin(GL_QUADS);
+	glVertex3f(-4000.0, d, 10000.0);
+	glVertex3f(4000.0, d, 10000.0);
+	glVertex3f(4000.0, d, -10000.0);
+	glVertex3f(-4000.0, d, -10000.0);
+	glEnd();*/
 	
     // Ground
-    glColor4f(0.3f,0.3f,0.3f,1);
+	Globals::grdTex->bind();
+    glColor4f(0.3f, 0.3f, 0.3f, 1);
     glBegin(GL_QUADS);
-    //glVertex3f(-35,-5,-35);
-    //glVertex3f(-35,-5, 15);
-    //glVertex3f( 15,-5, 15);
-    //glVertex3f( 15,-5,-35);
-    
-    //--
-    glVertex3f(-4000.0,-1.5,10000.0);
-    glVertex3f(4000.0,-1.5,10000.0);
-    glVertex3f(4000.0,-1.5,-10000.0);
-    glVertex3f(-4000.0,-1.5,-10000.0);
-    //--
+	glTexCoord2f(0, 50);
+    glVertex3f(-4000.0,d,10000.0);
+	glTexCoord2f(50, 50);
+    glVertex3f(4000.0,d,10000.0);
+	glTexCoord2f(50, 0);
+    glVertex3f(4000.0,d,-10000.0);
+	glTexCoord2f(0, 0);
+    glVertex3f(-4000.0,d,-10000.0);
     glEnd();
-    
+	Globals::grdTex->unbind();
+
+	/*
+	int length = Globals::grd_length;
+	//Globals::grdTex->bind();
+	glColor4f(0.3, 0.3, 0.3, 1);
+	glBegin(GL_QUADS);
+	
+	length *= 4;
+	cout << length << endl;
+	
+	//glNormal3f(0.0, 1.0, 0.0);
+	//glTexCoord2f(0, 50); 
+	glVertex3f(length, -1.5, -length*25);
+	//glTexCoord2f(50, 50); 
+	glVertex3f(length, -1.5, length*25);
+	//glTexCoord2f(50, 0); 
+	glVertex3f(-length, -1.5, length*25);
+	//glTexCoord2f(0, 0); 
+	glVertex3f(-length, -1.5, -length*25);
+
+	glEnd();
+	//Globals::grdTex->unbind();
+	*/
+
+	/*
+	// try to draw the groud
+	int length = Globals::grd_length;
+	glBegin(GL_QUADS);
+
+	glColor4f(0.3, 0.3, 0.3, 1);
+	//glNormal3f(0.0, 1.0, 0.0);
+	glVertex3f(length, -1.5, -length);
+	glVertex3f(length, -1.5, length);
+	glVertex3f(-length, -1.5, length);
+	glVertex3f(-length, -1.5, -length);
+	glEnd();
+	*/
+
+	// draw cube
     glColor4f(0.9f,0.9f,0.9f,1);
     
     startTranslate(5,0,-5);
@@ -264,7 +310,7 @@ void ShadowMapping::drawObjects(Group* group)
     
     
     startTranslate(3,-0.5,8);
-    Globals::bunny.render();
+    //Globals::bunny.render();
     endTranslate();
     
 
@@ -317,7 +363,8 @@ void ShadowMapping::renderScene(Group* group, bool spin)
 	// Now rendering from the camera POV, using the FBO to generate shadows
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
-	glViewport(0, 0, 640, 480);
+	//glViewport(0, 0, 640, 480);
+	glViewport(0, 0, 1350, 750);
 
 	//Enabling color write (previously disabled for light POV z-buffer rendering)
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -404,7 +451,7 @@ void ShadowMapping::bind()
 {
 	if (currentlyBoundShadowID != shadowShaderId)
 	{
-		Group* group;
+		//Group* group;
 		currentlyBoundShadowID = shadowShaderId;
 		glUseProgramObjectARB(shadowShaderId);
 		glBindTexture(GL_TEXTURE_2D, depthTextureId); 

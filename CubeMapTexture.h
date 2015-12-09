@@ -18,7 +18,7 @@ public:
 		const char* tpTex, 
 		const char* dnTex, 
 		const char* ftTex, 
-		const char* bkTex);
+		const char* bkTex, bool repeatTex_on);
 	//~CubeMapTexture(void) {};
 	//GLuint Load(std::vector<const char*>);
 

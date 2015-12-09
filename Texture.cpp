@@ -21,7 +21,7 @@ Texture::Texture()
     id = 0;
 }
 
-Texture::Texture(const char* fname)
+Texture::Texture(const char* fname, bool repeat_on)
 {
     filename = fname;
     
@@ -52,6 +52,11 @@ Texture::Texture(const char* fname)
     //Select GL_MODULATE to mix texture with quad color for shading:
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     
+	if (repeat_on) {
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
     //Use bilinear interpolation:
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -68,6 +73,7 @@ Texture::~Texture()
 void Texture::bind(void)
 {
     glBindTexture(GL_TEXTURE_2D, id);
+	//glActiveTexture(GL_TEXTURE7);
 }
 
 void Texture::unbind(void)

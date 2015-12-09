@@ -11,7 +11,14 @@ DrawData Globals::drawData;
 UpdateData Globals::updateData;
 
 CubeMapTexture Globals::testRoomTex;
-RoomCube Globals::testRoom(500.0);
+RoomCube Globals::testRoom(3000.0);
+
+Texture* Globals::grdTex = 0;
+Texture* Globals::wallTex = 0;
+float Globals::grd_length = 1000;
+float Globals::grd_width = 700;
+float Globals::grd_depth = -1.5;
+float Globals::wall_height = 50;
 
 bool Globals::cam3Dmove_on = false;
 

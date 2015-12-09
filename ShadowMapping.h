@@ -18,8 +18,8 @@
 #endif
 
 #define SHADOW_MAP_RATIO 2
-#define RENDER_WIDTH 1280.0
-#define RENDER_HEIGHT 960.0
+#define RENDER_WIDTH 1350.0
+#define RENDER_HEIGHT 750.0
 
 
 /*

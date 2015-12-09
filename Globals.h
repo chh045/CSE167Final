@@ -32,6 +32,14 @@ public:
 	static CubeMapTexture testRoomTex;
 	static RoomCube testRoom;
 
+	static Texture* grdTex;
+	static Texture* wallTex;
+	static float grd_length;
+	static float grd_width;
+	static float grd_depth;
+	static float wall_height;
+	
+
 	/* flags */
 	static bool cam3Dmove_on; // camera moving up/down?
 

@@ -20,8 +20,8 @@
 
 //#include "Utility.h"
 
-int Window::width = 640;   //Set window width in pixels here
-int Window::height = 480;   //Set window height in pixels here
+int Window::width = 1350;   //Set window width in pixels here
+int Window::height = 750;   //Set window height in pixels here
 
 bool Window::mouse_rotate_on = false;
 int Window::last_x = 0;
@@ -53,14 +53,16 @@ void Window::initialize(void)
 	//shadow1 = new Shader("shadow_map.vert", "shadow_map.frag", true);
 //	shadow = new ShadowMapping(shadow1->getPid());
 	
+	Globals::grdTex = new Texture("beachsand.ppm", true);// repeat mode on
+	Globals::wallTex = new Texture("brick_wall_original.ppm", true);// repeat mode on
 
 	Globals::testRoomTex = CubeMapTexture(
-		"PalldioPalace_intern_right.ppm",
-		"PalldioPalace_intern_left.ppm",
-		"PalldioPalace_intern_top.ppm",
-		"PalldioPalace_intern_base.ppm",
-		"PalldioPalace_intern_front.ppm",
-		"PalldioPalace_intern_back.ppm");
+		"plains-of-abraham_right.ppm",
+		"plains-of-abraham_left.ppm",
+		"plains-of-abraham_up.ppm",
+		"plains-of-abraham_dn.ppm",
+		"plains-of-abraham_front.ppm",
+		"plains-of-abraham_back.ppm", false);
 
 	skybox_shader = new Shader("skybox.vert", "skybox.frag", true);
 	envMapping_shader = new Shader("envMapping.vert", "envMapping.frag", true);
@@ -94,7 +96,7 @@ void Window::reshapeCallback(int w, int h)
 	glViewport(0, 0, w, h);                                          //Set new viewport size
 	glMatrixMode(GL_PROJECTION);                                     //Set the OpenGL matrix mode to Projection
 	glLoadIdentity();                                                //Clear the projection matrix by loading the identity
-	gluPerspective(60.0, double(width) / (double)height, 1.0, 1000.0); //Set perspective projection viewing frustum
+	gluPerspective(60.0, double(width) / (double)height, 1.0, 10000.0); //Set perspective projection viewing frustum
 }
 
 //----------------------------------------------------------------------------
@@ -160,6 +162,60 @@ void Window::displayCallback()
 
 	Globals::tree.draw();
 
+	// try to draw the groud
+	if (false) {
+		int length = Globals::grd_length;
+		Globals::grdTex->bind();
+		glBegin(GL_QUADS);
+
+		glColor3f(1, 1, 1);
+		//glNormal3f(0.0, 1.0, 0.0);
+		glTexCoord2f(0, 50); glVertex3f(length, -100, -length);
+		glTexCoord2f(50, 50); glVertex3f(length, -100, length);
+		glTexCoord2f(50, 0); glVertex3f(-length, -100, length);
+		glTexCoord2f(0, 0); glVertex3f(-length, -100, -length);
+
+		glEnd();
+		Globals::grdTex->unbind();
+	}
+
+	// draw wall
+	Globals::wallTex->bind();
+	glBegin(GL_QUADS);
+
+	glColor3f(1, 1, 1);
+	float sq_l = Globals::grd_length / 2;
+	float sq_w = Globals::grd_width / 2;
+	float wall_h = Globals::wall_height;
+	float wall_d = Globals::grd_depth;
+
+	// front
+	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d -wall_h, -sq_l);
+	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d -wall_h, -sq_l);
+	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d+wall_h, -sq_l);
+	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d+wall_h, -sq_l);
+
+	// back
+	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d -wall_h, sq_l);
+	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d -wall_h, sq_l);
+	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d+wall_h, sq_l);
+	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d+wall_h, sq_l);
+
+	// right
+	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d -wall_h, -sq_l);
+	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d -wall_h, sq_l);
+	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d+wall_h, sq_l);
+	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d+wall_h, -sq_l);
+
+	// left
+	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d -wall_h, sq_l);
+	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d -wall_h, -sq_l);
+	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d+wall_h, -sq_l);
+	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d+wall_h, sq_l);
+
+	glEnd();
+	Globals::wallTex->unbind();
+
 	//Globals::cube.draw(Globals::drawData);
 
 	glEnable(GL_LIGHTING);
@@ -215,20 +271,23 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 
 
 	case 'l':
-
-		Globals::camera.moveZoom(-4);
+		Globals::camera.lookUpDown(-1);
+		//Globals::camera.moveZoom(-4);
 		break;
 
 	case '.':
-		Globals::camera.moveZoom(4);
+		Globals::camera.lookUpDown(1);
+		//Globals::camera.moveZoom(4);
 		break;
 
-	case ',':
-		Globals::camera.moveLeftRight(-4);
+	case ',': //left
+		Globals::camera.orbitTrack(Globals::camera.getUp(), 2);
+		//Globals::camera.moveLeftRight(-4);
 		break;
 
-	case '/':
-		Globals::camera.moveLeftRight(4);
+	case '/': //right
+		//Globals::camera.moveLeftRight(4);
+		Globals::camera.orbitTrack(Globals::camera.getUp(), -2);
 		break;
 
 	case '0':
@@ -267,21 +326,19 @@ void Window::specialKeyCallback(int key, int x, int y)
 		break;
 		*/
 	case GLUT_KEY_LEFT:
-		Globals::camera.orbitTrack(Globals::camera.getUp(), 2);
+		Globals::camera.moveLeft();
 		break;
 
 	case GLUT_KEY_RIGHT:
-		Globals::camera.orbitTrack(Globals::camera.getUp(), -2);
-
-		//Globals::camera.lookLeftRight(-1);
+		Globals::camera.moveRight();
 		break;
 
 	case GLUT_KEY_UP:
-		Globals::camera.lookUpDown(-1);
+		Globals::camera.moveFoward(Globals::cam3Dmove_on);
 		break;
 
 	case GLUT_KEY_DOWN:
-		Globals::camera.lookUpDown(1);
+		Globals::camera.moveBack(Globals::cam3Dmove_on);
 		break;
 
 	default:
@@ -350,7 +407,7 @@ void Window::mouseMotion(int x, int y)
 void Window::passiveMouseMotion(int x, int y) {
 
 	// rotate in camera space (z axis is out from the screen)
-	/*Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
+	Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
 	Vector3 neg_z(0, 0, -1);
 
 	Vector3 rot_axis = neg_z.cross(axis);
@@ -359,7 +416,7 @@ void Window::passiveMouseMotion(int x, int y) {
 	if (velocity > 0.001) {
 		float rot_angle = velocity * 0.05;
 		Globals::camera.rotate(rot_axis, rot_angle);
-	}*/
+	}
 
-	gluLookAt(1.0, 0.0, 0.0, x, y, 0, 0.0, 1.0, 0.0);
+	//gluLookAt(1.0, 0.0, 0.0, x, y, 0, 0.0, 1.0, 0.0);
 }
