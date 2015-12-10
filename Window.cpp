@@ -17,7 +17,6 @@
 #include <GL/glut.h>
 #endif
 
-
 //#include "Utility.h"
 
 int Window::width = 1350;   //Set window width in pixels here
@@ -39,11 +38,46 @@ int frame = 0, time, timebase = 0;
 float mouseXposition = 0;
 float mouseYposition = 0;
 
-
-
-
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
 extern const int MAX_DEPTH;
+
+void draw_wall() {
+	Globals::wallTex->bind();
+	glBegin(GL_QUADS);
+
+	glColor3f(1, 1, 1);
+	float sq_l = Globals::grd_length / 2;
+	float sq_w = Globals::grd_width / 2;
+	float wall_h = Globals::wall_height;
+	float wall_d = Globals::grd_depth;
+
+	// front
+	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d, -sq_l);
+	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d, -sq_l);
+	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d + wall_h, -sq_l);
+	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d + wall_h, -sq_l);
+
+	// back
+	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d, sq_l);
+	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d, sq_l);
+	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d + wall_h, sq_l);
+	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d + wall_h, sq_l);
+
+	// right
+	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d, -sq_l);
+	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d, sq_l);
+	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d + wall_h, sq_l);
+	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d + wall_h, -sq_l);
+
+	// left
+	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d, sq_l);
+	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d, -sq_l);
+	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d + wall_h, -sq_l);
+	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d + wall_h, sq_l);
+
+	glEnd();
+	Globals::wallTex->unbind();
+}
 
 void Window::initialize(void)
 {
@@ -108,7 +142,7 @@ void Window::reshapeCallback(int w, int h)
 	glViewport(0, 0, w, h);                                          //Set new viewport size
 	glMatrixMode(GL_PROJECTION);                                     //Set the OpenGL matrix mode to Projection
 	glLoadIdentity();                                                //Clear the projection matrix by loading the identity
-	gluPerspective(60.0, double(width) / (double)height, 1.0, 10000.0); //Set perspective projection viewing frustum
+	gluPerspective(60.0, double(width) / (double)height, 1, 1000.0); //Set perspective projection viewing frustum
 }
 
 //----------------------------------------------------------------------------
@@ -196,48 +230,14 @@ void Window::displayCallback()
 	}
 
 	// draw wall
-	Globals::wallTex->bind();
-	glBegin(GL_QUADS);
-
-	glColor3f(1, 1, 1);
-	float sq_l = Globals::grd_length / 2;
-	float sq_w = Globals::grd_width / 2;
-	float wall_h = Globals::wall_height;
-	float wall_d = Globals::grd_depth;
-
-	// front
-	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d -wall_h, -sq_l);
-	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d -wall_h, -sq_l);
-	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d+wall_h, -sq_l);
-	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d+wall_h, -sq_l);
-
-	// back
-	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d -wall_h, sq_l);
-	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d -wall_h, sq_l);
-	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d+wall_h, sq_l);
-	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d+wall_h, sq_l);
-
-	// right
-	glTexCoord2f(0, 2); glVertex3f(sq_w, wall_d -wall_h, -sq_l);
-	glTexCoord2f(10, 2); glVertex3f(sq_w, wall_d -wall_h, sq_l);
-	glTexCoord2f(10, 0); glVertex3f(sq_w, wall_d+wall_h, sq_l);
-	glTexCoord2f(0, 0); glVertex3f(sq_w, wall_d+wall_h, -sq_l);
-
-	// left
-	glTexCoord2f(0, 2); glVertex3f(-sq_w, wall_d -wall_h, sq_l);
-	glTexCoord2f(10, 2); glVertex3f(-sq_w, wall_d -wall_h, -sq_l);
-	glTexCoord2f(10, 0); glVertex3f(-sq_w, wall_d+wall_h, -sq_l);
-	glTexCoord2f(0, 0); glVertex3f(-sq_w, wall_d+wall_h, sq_l);
-
-	glEnd();
-	Globals::wallTex->unbind();
+	draw_wall();
 
 	//Globals::cube.draw(Globals::drawData);
 
 	frame++;
 	time = glutGet(GLUT_ELAPSED_TIME);
 	if (time - timebase > 1000) {
-			std::cout << "FPS: " << frame*1000.0 / (time - timebase) << std::endl;
+		//std::cout << "FPS: " << frame*1000.0 / (time - timebase) << std::endl;
 		timebase = time;
 		frame = 0;
 	}
@@ -281,6 +281,11 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 		Globals::tree1.angle--;
 		Globals::tree2.angle--;
 		break;
+	case 'B':
+		Globals::bounding_box_on = !Globals::bounding_box_on;
+		//OBJObject::bbox_on = !OBJObject::bbox_on;
+		break;
+
 	case 'D':
 		if (Globals::tree.current_depth < MAX_DEPTH)
 			Globals::tree.current_depth++;

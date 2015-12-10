@@ -15,10 +15,12 @@ RoomCube Globals::testRoom(3000.0);
 
 Texture* Globals::grdTex = 0;
 Texture* Globals::wallTex = 0;
-float Globals::grd_length = 1000;
-float Globals::grd_width = 700;
+
+float Globals::grd_length = 500;
+float Globals::grd_width = 500;
 float Globals::grd_depth = -20;
 float Globals::wall_height = 50;
+bool Globals::bounding_box_on = false;
 
 bool Globals::cam3Dmove_on = false;
 
@@ -34,12 +36,12 @@ bool Globals::emulateDay = false;
 
 Group* Globals::group = new Group();
 
-OBJObject Globals::bunny("bunny.obj");
+OBJObject Globals::bunny("bunny.obj", true);
 
-OBJObject Globals::girl("girl.obj");
+OBJObject Globals::girl("girl.obj", true);
 
-OBJObject Globals::house("house.obj");
+OBJObject Globals::house("house.obj", false);
 
-OBJObject Globals::monster("monster.obj");
+OBJObject Globals::monster("monster.obj", true);
 
 Shader Globals::skybox("skybox.vert", "skybox.frag", true);

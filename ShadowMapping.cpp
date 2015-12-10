@@ -7,10 +7,44 @@
 
 #include "ShadowMapping.h"
 
+/* for drawing multiple obj */
+#define monsterNum 3
+#define girlNum 3
+#define offset -5
+#define step_size 1
+#define random_num -step_size+2*step_size*((float)rand()/RAND_MAX)
+const int girl_init_x = -3;
+const int monster_init_x = -7;
+const int girl_init_z = 0;
+const int monster_init_z = 0;
+std::vector<Vector3*> girl_pos;
+std::vector<Vector3*> monster_pos;
 
 
 GLhandleARB ShadowMapping::currentlyBoundShadowID = 0x0;
 
+void genCharacterPos() {
+	for (int i = 0; i < girlNum; i++) {
+		girl_pos.push_back(new Vector3(girl_init_x, Globals::grd_depth, girl_init_z + i * offset));
+	}
+
+	for (int i = 0; i < monsterNum; i++) {
+		monster_pos.push_back(new Vector3(monster_init_x, Globals::grd_depth, monster_init_z + i * offset));
+	}
+}
+
+void random_walk() {
+	std::srand(1);
+	for (int i = 0; i < girlNum; i++) {
+		Vector3 step(random_num, 0, random_num);
+		*(girl_pos.at(i)) = girl_pos.at(i)->add(step);
+	}
+
+	for (int i = 0; i < monsterNum; i++) {
+		Vector3 step(random_num, 0, random_num);
+		*(monster_pos.at(i)) = monster_pos.at(i)->add(step);
+	}
+}
 
 ShadowMapping::ShadowMapping(GLhandleARB shadowShader){
     
@@ -52,6 +86,9 @@ ShadowMapping::ShadowMapping(const char *vert, const char *frag, bool isFile)
 	/*cout << "shadow id: " << shadowShaderId << endl;
 	cout << "shadowMapUniform: " << shadowMapUniform << endl;
 	cout << "depthTextureId: " << depthTextureId << endl;*/
+
+	// call local function to build girl_pos and monster_pos
+	genCharacterPos();
 }
 
 void ShadowMapping::generateShadowFBO()
@@ -234,17 +271,23 @@ void ShadowMapping::endTranslate()
 
 void ShadowMapping::drawObjects(Group* group)
 {
+	// very hard coding, very bad..
+	Globals::girl.bbox_on = Globals::bounding_box_on;
+	
 	float d = Globals::grd_depth;
 	
 	// Ground
-	glColor4f(0.3f, 0.3f, 0.3f, 1);
+	float sq_l = Globals::grd_length / 2;
+	float sq_w = Globals::grd_width / 2;
+	glColor4f(244.0/255, 164.0/255, 96.0/255, 1);
 	glBegin(GL_QUADS);
-	glVertex3f(-4000.0, d, 10000.0);
-	glVertex3f(4000.0, d, 10000.0);
-	glVertex3f(4000.0, d, -10000.0);
-	glVertex3f(-4000.0, d, -10000.0);
+	glVertex3f(-sq_w, d, sq_l);
+	glVertex3f(sq_w, d, sq_l);
+	glVertex3f(sq_w, d, -sq_l);
+	glVertex3f(-sq_w, d, -sq_l);
 	glEnd();
 	
+
     // Ground
 
 	/*
@@ -311,9 +354,7 @@ void ShadowMapping::drawObjects(Group* group)
     endTranslate();
     
     
-    startTranslate(-3,-20,8);
-    Globals::girl.render();
-    endTranslate();
+    
 
 	//startTranslate(13, -20, -10);
 	glPushMatrix();
@@ -352,10 +393,28 @@ void ShadowMapping::drawObjects(Group* group)
 	Globals::house.render();
 	endTranslate();
 
-	startTranslate(-7, -20, 8);
-	Globals::monster.render();
-	endTranslate();
-	
+	// drawing characters
+
+	for (int i = 0; i < girl_pos.size(); i++) {
+		float x = girl_pos.at(i)->operator[](0);
+		float y = girl_pos.at(i)->operator[](1);
+		float z = girl_pos.at(i)->operator[](2);
+		startTranslate(x, y, z);
+		Globals::girl.render();
+		endTranslate();
+	}
+	for (int i = 0; i < monster_pos.size(); i++) {
+		float x = monster_pos.at(i)->operator[](0);
+		float y = monster_pos.at(i)->operator[](1);
+		float z = monster_pos.at(i)->operator[](2);
+		startTranslate(x, y, z);
+		Globals::monster.render();
+		endTranslate();
+	}
+
+	// update monster_pos and girl_pos
+	random_walk();
+
 	//Globals::girl.render();
 	
     

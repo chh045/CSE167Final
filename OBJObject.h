@@ -23,7 +23,13 @@ class OBJObject : public Drawable
 {
     
 protected:
-    
+	Vector3 max_x, max_y, max_z;
+	Vector3 min_x, min_y, min_z;
+	Vector3 center_bounding;
+	float radius_bounding;
+	
+	bool isCharacter;
+
     //Storage vectors
 	std::string objName;
     std::vector<Vector3*>* vertices;
@@ -49,12 +55,14 @@ protected:
     //Parse
     void parse(std::string&);
     void load();
+	void findEdgePoint(void);
+	void findBoundingBox(void);
     //why nothing here ? lol
     
 public:
-    
+	static bool bbox_on;
     OBJObject();
-    OBJObject(std::string);
+    OBJObject(std::string, bool isCharac=false);
     virtual ~OBJObject(void);
     
     virtual void draw(DrawData&);

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include "OBJObject.h"
+//#include "Miniball.hpp"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -21,18 +22,26 @@ delete __vect__;\
 } while(false)
 
 
+bool OBJObject::bbox_on = false;
 
 
-
-OBJObject::OBJObject(std::string filename) : Drawable()
+OBJObject::OBJObject(std::string filename, bool isCharac) : Drawable()
 {
-    this->vertices = new std::vector<Vector3*>();
+	isCharacter = isCharac;
+
+	this->vertices = new std::vector<Vector3*>();
     this->normals = new std::vector<Vector3*>();
     this->colors = new std::vector<Vector3*>();
     this->faces = new std::vector<Face*>();
     //this->rasterizeVertices = new std::vector<Vector3*>();
     
     parse(filename);
+	
+	findEdgePoint();
+	findBoundingBox();
+	//center_bounding.print("the center is ");
+
+	
 }
 
 OBJObject::~OBJObject()
@@ -162,6 +171,7 @@ void OBJObject::parse(std::string& filename)
     }
     
     load();
+	
     fclose(fp);   // make sure you don't forget to close the file when done
 }
 
@@ -217,6 +227,54 @@ void OBJObject::load(){
 	std::cout << "size of vertices: " << vertices->size() << std::endl;
 	std::cout << "check: " << faces->at(243)->vertexIndices[2] << std::endl;
 	//std::cout << "size of allVertex: " << faces->size() << std::endl;
+
+}
+
+void OBJObject::findEdgePoint() {
+	// initializa max* and min* points
+	
+	int vert_num = vertices->size();
+
+	for (int idx = 0; idx < vert_num; idx += 3) {
+		Vector3 this_vert = *(vertices->at(idx));
+		
+		if (this_vert[0] > max_x[0])
+			max_x = this_vert;
+		if (this_vert[0 < min_x[0]])
+			min_x = this_vert;
+		if (this_vert[1] > max_y[1])
+			max_y = this_vert;
+		if (this_vert[1] < min_y[1])
+			min_y = this_vert;
+		if (this_vert[2] > max_z[2])
+			max_z = this_vert;
+		if (this_vert[2] < min_z[2])
+			min_z = this_vert;
+	}
+}
+
+void OBJObject::findBoundingBox() {
+	
+	float x_leng = (max_x - min_x).magnitude();
+	float y_leng = (max_y - min_y).magnitude();
+	float z_leng = (max_z - min_z).magnitude();
+	
+	float max_leng = (x_leng > y_leng) ? x_leng : y_leng;
+	max_leng = (max_leng > z_leng) ? max_leng : z_leng;
+
+	if (max_leng == x_leng) {
+		center_bounding = (max_x + min_x).multiply(0.5);
+		radius_bounding = x_leng / 2;
+	}
+	else if (max_leng == y_leng) {
+		center_bounding = (max_y + min_y).multiply(0.5);
+		radius_bounding = y_leng / 2;
+	}
+	else {
+		center_bounding = (max_z + min_z).multiply(0.5);
+		radius_bounding = z_leng / 2;
+	}
+	
 
 }
 
@@ -297,7 +355,36 @@ void OBJObject::render(){
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
+
+	if (bbox_on && isCharacter) {
+	//if (true) {
+		Matrix4 M;
+		M.makeTranslate(center_bounding);
+		
+		glMatrixMode(GL_MODELVIEW);
+
+		glPushMatrix();
+		glMultMatrixf(M.ptr());
+		
+		glLineWidth(0.2);
+		glColor3f(1, 0, 0);
+		glutWireSphere(radius_bounding, 30, 30);
+		glLineWidth(1);
+
+		glPopMatrix();
+		
+
+		/*
+		glPushMatrix();
+		glTranslatef(center_bounding[0], center_bounding[1], center_bounding[2]);
+		glLineWidth(0.2);
+		glColor3f(1, 0, 0);
+		glutWireSphere(radius_bounding, 50, 50);
+		glLineWidth(1);
+		glPopMatrix();
+		*/
 	}
+}
 
 
 /*
