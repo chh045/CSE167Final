@@ -115,13 +115,30 @@ void OBJObject::parse(std::string& filename)
             continue;
         c2 = fgetc(fp);
         if ((c1=='v') && (c2==' ')){
+           
+#ifdef _WIN32
             fscanf(fp, "%f %f %f%c", &x, &y, &z, &c3);
             if( c3 == ' '){
                 fscanf(fp, "%f %f %f", &r, &g, &b);
                 //colors->push_back(new Vector3(r, g, b));
             }
+#endif
+            
+#ifdef __APPLE__
+            if(objName == "bunny.obj")
+                fscanf(fp, "%f %f %f %f %f %f", &x, &y, &z, &r, &g, &b);
+            else
+                fscanf(fp, "%f %f %f", &x, &y, &z);
+#endif
+            
+            
+            
             vertices->push_back(new Vector3(x, y, z));
+            
         }
+        
+        
+        
         
         else if ((c1 == 'v') && (c2 == 'n')){
             fscanf(fp, "%f %f %f", &xn, &yn, &zn);

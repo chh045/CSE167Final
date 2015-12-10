@@ -6,7 +6,13 @@
 **/
 
 #include "ShadowMapping.h"
+<<<<<<< HEAD
 #include <time.h>
+=======
+#ifdef __APPLE__
+#include <math.h>
+#endif
+>>>>>>> ee7b4a3ede60251daffd5151a88605b3710da02b
 
 /* for drawing multiple obj */
 #define monsterNum 3
