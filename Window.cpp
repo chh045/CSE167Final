@@ -13,6 +13,7 @@
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include <math.h>
 #else
 #include <GL/glut.h>
 #endif
@@ -33,7 +34,7 @@ Shader* envMapping_shader;
 
 
 // For frame
-int frame = 0, time, timebase = 0;
+int frame = 0, time1, timebase = 0;
 
 float mouseXposition = 0;
 float mouseYposition = 0;
@@ -235,10 +236,10 @@ void Window::displayCallback()
 	//Globals::cube.draw(Globals::drawData);
 
 	frame++;
-	time = glutGet(GLUT_ELAPSED_TIME);
-	if (time - timebase > 1000) {
+	time1 = glutGet(GLUT_ELAPSED_TIME);
+	if (time1 - timebase > 1000) {
 		//std::cout << "FPS: " << frame*1000.0 / (time - timebase) << std::endl;
-		timebase = time;
+		timebase = time1;
 		frame = 0;
 	}
 
