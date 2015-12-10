@@ -6,43 +6,138 @@
 **/
 
 #include "ShadowMapping.h"
+#include <time.h>
 
 /* for drawing multiple obj */
 #define monsterNum 3
 #define girlNum 3
 #define offset -5
 #define step_size 1
-#define random_num -step_size+2*step_size*((float)rand()/RAND_MAX)
+//#define turing_ratio 0.2
+
+// generate a random float in [-step_size, step_size]
+#define random_num -step_size+2*step_size*((float)rand()/RAND_MAX) 
+
 const int girl_init_x = -3;
 const int monster_init_x = -7;
 const int girl_init_z = 0;
 const int monster_init_z = 0;
-std::vector<Vector3*> girl_pos;
+std::vector<Vector3*> girl_pos; // postion
 std::vector<Vector3*> monster_pos;
-
+std::vector<Vector3*> girl_dir; // direction vector, store normalized vectors
+std::vector<Vector3*> monster_dir; // direction vector, normalized
+std::vector<bool> girl_collision;
+std::vector<bool> monster_collision;
 
 GLhandleARB ShadowMapping::currentlyBoundShadowID = 0x0;
 
 void genCharacterPos() {
+	std::srand(time(NULL));
 	for (int i = 0; i < girlNum; i++) {
+		// generate position
 		girl_pos.push_back(new Vector3(girl_init_x, Globals::grd_depth, girl_init_z + i * offset));
+		
+		// generate direction vector
+		Vector3 dir(random_num, 0, random_num);
+		girl_dir.push_back(new Vector3(dir.normalize()));
+		girl_collision.push_back(false);
 	}
 
 	for (int i = 0; i < monsterNum; i++) {
+		// generate position
 		monster_pos.push_back(new Vector3(monster_init_x, Globals::grd_depth, monster_init_z + i * offset));
+
+		// generate direction vector
+		Vector3 dir(random_num, 0, random_num);
+		monster_dir.push_back(new Vector3(dir.normalize()));
+		monster_collision.push_back(false);
 	}
 }
 
-void random_walk() {
-	std::srand(1);
+bool isTouchWall(Vector3 pos, float radius, Vector3 & reflect_vec) {
+	float sq_l = Globals::grd_length / 2; // z
+	float sq_w = Globals::grd_width / 2; // x
+	float x = pos[0];
+	float z = pos[2];
+
+	// detect right wall
+	if ((x + radius) > sq_w) {
+		reflect_vec = Vector3(-1, 0, 0);
+		return true;
+	}
+	// detect left wall
+	if ((x - radius) < -sq_w) {
+		reflect_vec = Vector3(1, 0, 0);
+		return true;
+	}
+	// detect front wall (in front of camera)
+	if ((z - radius) < -sq_l) {
+		reflect_vec = Vector3(0, 0, 1);
+		return true;
+	}
+	// detect back wall (in the back of camera)
+	if ((z + radius) > sq_l) {
+		reflect_vec = Vector3(0, 0, -1);
+		return true;
+	}
+	return false;
+}
+
+void random_walk(float girl_r, float mons_r) {
+	
+	
+	// girls
 	for (int i = 0; i < girlNum; i++) {
-		Vector3 step(random_num, 0, random_num);
-		*(girl_pos.at(i)) = girl_pos.at(i)->add(step);
+
+		// calculate the new pos but dont apply
+		Vector3 delta_dir = girl_dir.at(i)->multiply(step_size);
+		Vector3 new_pos = girl_pos.at(i)->add(delta_dir);
+
+		// detect if new_pos of girl touchs the wall
+		Vector3 reflect_dir;
+		if (isTouchWall(new_pos, girl_r, reflect_dir)) {
+			Vector3 L = *(girl_dir.at(i));
+			Vector3 new_dir = L + reflect_dir.multiply(2 * (L.multiply(-1).dot(reflect_dir)));
+			*(girl_dir.at(i)) = new_dir;
+			*(girl_pos.at(i)) = girl_pos.at(i)->add(*(girl_dir.at(i))*step_size);
+
+			girl_collision.at(i) = true;
+		}
+		// else assign new_pos to current pos
+		else {
+			*(girl_pos.at(i)) = new_pos;
+		}
 	}
 
 	for (int i = 0; i < monsterNum; i++) {
-		Vector3 step(random_num, 0, random_num);
-		*(monster_pos.at(i)) = monster_pos.at(i)->add(step);
+		// calculate the new pos but dont apply
+		Vector3 delta_dir = monster_dir.at(i)->multiply(step_size);
+		Vector3 new_pos = monster_pos.at(i)->add(delta_dir);
+
+		// detect if new_pos of girl touchs the wall
+		Vector3 reflect_dir;
+		if (isTouchWall(new_pos, girl_r, reflect_dir)) {
+			Vector3 L = *(monster_dir.at(i));
+			Vector3 new_dir = L + reflect_dir.multiply(2 * (L.multiply(-1).dot(reflect_dir)));
+			*(monster_dir.at(i)) = new_dir;
+			*(monster_pos.at(i)) = monster_pos.at(i)->add(*(monster_dir.at(i))*step_size);
+
+			monster_collision.at(i) = true;
+		}
+		// else assign new_pos to current pos
+		else {
+			*(monster_pos.at(i)) = new_pos;
+		}
+		/*
+		// updating the position by direction vector 
+		Vector3 delta_dir = monster_pos.at(i)->multiply(step_size);
+		*(monster_pos.at(i)) = monster_pos.at(i)->add(delta_dir);
+
+		// updating the direction vector
+		Vector3 new_dir(random_num, 0, random_num);
+		//new_dir = (*(monster_pos.at(i)) + new_dir.normalize()).normalize();
+		*(monster_pos.at(i)) = new_dir.normalize();
+		*/
 	}
 }
 
@@ -384,10 +479,11 @@ void ShadowMapping::drawObjects(Group* group)
 	//glTranslatef(-13, -20, -10);
 	//endTranslate();
 
-    
+    /*
 	startTranslate(3, -20, 8);
 	Globals::bunny.render();
 	endTranslate();
+	*/
 
 	startTranslate(-7, -20, 20);
 	Globals::house.render();
@@ -396,24 +492,36 @@ void ShadowMapping::drawObjects(Group* group)
 	// drawing characters
 
 	for (int i = 0; i < girl_pos.size(); i++) {
+		if (girl_collision.at(i)) {
+			Globals::girl.touched = true;
+			girl_collision.at(i) = false;
+		}
+		
 		float x = girl_pos.at(i)->operator[](0);
 		float y = girl_pos.at(i)->operator[](1);
 		float z = girl_pos.at(i)->operator[](2);
 		startTranslate(x, y, z);
 		Globals::girl.render();
+		Globals::girl.touched = false;
 		endTranslate();
 	}
 	for (int i = 0; i < monster_pos.size(); i++) {
+		if (monster_collision.at(i)) {
+			Globals::monster.touched = true;
+			monster_collision.at(i) = false;
+		}
+		
 		float x = monster_pos.at(i)->operator[](0);
 		float y = monster_pos.at(i)->operator[](1);
 		float z = monster_pos.at(i)->operator[](2);
 		startTranslate(x, y, z);
 		Globals::monster.render();
+		Globals::monster.touched = false;
 		endTranslate();
 	}
 
 	// update monster_pos and girl_pos
-	random_walk();
+	random_walk(Globals::girl.radius_bounding, Globals::monster.radius_bounding);
 
 	//Globals::girl.render();
 	

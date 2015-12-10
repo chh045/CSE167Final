@@ -28,6 +28,7 @@ bool OBJObject::bbox_on = false;
 OBJObject::OBJObject(std::string filename, bool isCharac) : Drawable()
 {
 	isCharacter = isCharac;
+	touched = false;
 
 	this->vertices = new std::vector<Vector3*>();
     this->normals = new std::vector<Vector3*>();
@@ -367,7 +368,10 @@ void OBJObject::render(){
 		glMultMatrixf(M.ptr());
 		
 		glLineWidth(0.2);
-		glColor3f(1, 0, 0);
+		if (touched)
+			glColor3f(1, 0, 0);
+		else
+			glColor3f(1, 1, 1);
 		glutWireSphere(radius_bounding, 30, 30);
 		glLineWidth(1);
 

@@ -40,6 +40,7 @@ public:
 	static float grd_depth;
 	static float wall_height;
 	static bool bounding_box_on;
+	static bool env_mapping_on;
 
 	/* flags */
 	static bool cam3Dmove_on; // camera moving up/down?

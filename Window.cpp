@@ -189,6 +189,7 @@ void Window::displayCallback()
 
 	glCullFace(GL_BACK);
 	shadow->drawObjects(Globals::group);
+	//shadow->
 	shadow->unbind();
 	glDisable(GL_CULL_FACE);
 
@@ -196,7 +197,8 @@ void Window::displayCallback()
 
 
 	/* drawing sphere with environmental mapping */
-	envMapping_shader->bind();
+	if (Globals::env_mapping_on)
+		envMapping_shader->bind();
 	GLint camPos_loc = glGetUniformLocationARB(envMapping_shader->getPid(), "camPos");
 	glUniform3fv(camPos_loc, 1, Globals::camera.getPos().ptr());
 	//glProgramUniform3fvEXT(cube_shader->getPid(), camPos_loc, 1, Globals::camera.getPos().ptr());
@@ -205,7 +207,8 @@ void Window::displayCallback()
 	Globals::sphere.draw(Globals::drawData);
 	Globals::testRoomTex.unbind();
 
-	envMapping_shader->unbind();
+	if (Globals::env_mapping_on)
+		envMapping_shader->unbind();
 
 
 	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
@@ -301,6 +304,9 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 			Globals::tree1.current_depth--;
 		if (Globals::tree2.current_depth > 0)
 			Globals::tree2.current_depth--;
+		break;
+	case 'E':
+		Globals::env_mapping_on = !Globals::env_mapping_on;
 		break;
 	case 'h':
 		Globals::cam3Dmove_on = !Globals::cam3Dmove_on;

@@ -3,7 +3,7 @@
 Camera Globals::camera;
 
 Cube Globals::cube(10.0);
-Sphere Globals::sphere(1, 50, 5);
+Sphere Globals::sphere(3, 50, 50);
 
 Light Globals::light;
 
@@ -16,11 +16,12 @@ RoomCube Globals::testRoom(3000.0);
 Texture* Globals::grdTex = 0;
 Texture* Globals::wallTex = 0;
 
-float Globals::grd_length = 500;
-float Globals::grd_width = 500;
+float Globals::grd_length = 100;
+float Globals::grd_width = 100;
 float Globals::grd_depth = -20;
-float Globals::wall_height = 50;
+float Globals::wall_height = 25;
 bool Globals::bounding_box_on = false;
+bool Globals::env_mapping_on = true;
 
 bool Globals::cam3Dmove_on = false;
 

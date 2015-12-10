@@ -25,10 +25,7 @@ class OBJObject : public Drawable
 protected:
 	Vector3 max_x, max_y, max_z;
 	Vector3 min_x, min_y, min_z;
-	Vector3 center_bounding;
-	float radius_bounding;
 	
-	bool isCharacter;
 
     //Storage vectors
 	std::string objName;
@@ -60,6 +57,12 @@ protected:
     //why nothing here ? lol
     
 public:
+	Vector3 center_bounding;
+	float radius_bounding;
+
+	bool touched;
+	bool isCharacter;
+
 	static bool bbox_on;
     OBJObject();
     OBJObject(std::string, bool isCharac=false);
