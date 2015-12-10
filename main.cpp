@@ -3,8 +3,11 @@
 #include <iostream>
 #include "MathTestBench.h"
 #include "Window.h"
+#include <conio.h>
+#include <irrKlang.h>
+using namespace irrklang;
 
-
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -14,6 +17,11 @@
 
 int main(int argc, char *argv[])
 {
+
+	// start the sound engine with default parameters
+	//ISoundEngine* engine = createIrrKlangDevice();
+
+
     //Math Test Bench
     //MathTestBench::runTests();
     

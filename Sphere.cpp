@@ -22,7 +22,7 @@ void Sphere::draw(DrawData& data)
     
     glPushMatrix();
    // glMultMatrixf(toWorld.ptr());
-    
+	//glTranslatef(0.0f, 0.0f, 200.0f);
     glutSolidSphere(radius, slices, stacks);
     
     glPopMatrix();

@@ -11,12 +11,15 @@
 
 #include "Window.h"  // contains glee
 
+
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #include <math.h>
 #else
 #include <GL/glut.h>
 #endif
+
 
 //#include "Utility.h"
 
@@ -38,6 +41,9 @@ int frame = 0, time1, timebase = 0;
 
 float mouseXposition = 0;
 float mouseYposition = 0;
+
+float Mx = 0, My =0 , Mz = 0;
+
 
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
 extern const int MAX_DEPTH;
@@ -82,6 +88,9 @@ void draw_wall() {
 
 void Window::initialize(void)
 {
+
+
+
 	//Setup the light
 	Vector4 lightPos(0.0, 10.0, 15.0, 1.0);
 	Globals::light.position = lightPos;
@@ -211,8 +220,16 @@ void Window::displayCallback()
 	if (Globals::env_mapping_on)
 		envMapping_shader->unbind();
 
-
+	//glTranslatef(Mx, My, Mz);
+	glTranslatef(2.5, -14.9, 30);
 	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
+	glTranslatef(-2.5, 14.9, -30);
+	//glTranslatef(-Mx, -My, -Mz);
+
+	glTranslatef(2.5, -14.9, 10);
+	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
+	glTranslatef(-2.5, 14.9, -10);
+
 
 	//Globals::tree.draw();
 
@@ -241,7 +258,7 @@ void Window::displayCallback()
 	frame++;
 	time1 = glutGet(GLUT_ELAPSED_TIME);
 	if (time1 - timebase > 1000) {
-		//std::cout << "FPS: " << frame*1000.0 / (time1 - timebase) << std::endl;
+		std::cout << "FPS: " << frame*1000.0 / (time1 - timebase) << std::endl;
 		timebase = time1;
 		frame = 0;
 	}
@@ -317,6 +334,10 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 		Globals::emulateDay = !Globals::emulateDay;
 		break;
 
+	case 'R':
+		Globals::movementOn = !Globals::movementOn;
+		break;
+
 
 	case 'l':
 		Globals::camera.lookUpDown(-1);
@@ -341,23 +362,39 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 	case '1':
 		//rot_axis[0] -= 0.1;
 //		Globals::camera.rotate(rot_axis, rot_angle);
+		Mx = Mx + 0.1;
 		break;
 	case '2':
 	//	rot_axis[0] += 0.1;
 	//	Globals::camera.rotate(rot_axis, rot_angle);
+		Mx = Mx - 0.1;
 		break;
 	case '3':
 		//rot_axis[1] += 0.1;
 //Globals::camera.rotate(rot_axis, rot_angle);
+		My = My + 0.1;
 		break;
 	case '4':
 		//rot_axis[1] -= 0.1;
 	//	Globals::camera.rotate(rot_axis, rot_angle);
+		My = My - 0.1;
+		break;
+	case '5':
+		//rot_axis[1] += 0.1;
+		//Globals::camera.rotate(rot_axis, rot_angle);
+		Mz = Mz + 0.1;
+		break;
+	case '6':
+		//rot_axis[1] -= 0.1;
+		//	Globals::camera.rotate(rot_axis, rot_angle);
+		Mz = Mz - 0.1;
 		break;
 
 	default:
 		break;
 	}
+
+	cout << "Mx: " << Mx << "My: " << My << "Mz: " << Mz << endl;
 }
 
 void Window::specialKeyCallback(int key, int x, int y)

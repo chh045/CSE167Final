@@ -60,6 +60,8 @@ public:
 	static OBJObject house;
 	static OBJObject monster;
     static Shader skybox;
+
+	static bool movementOn;
 };
 
 #endif

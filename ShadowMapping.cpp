@@ -6,19 +6,17 @@
 **/
 
 #include "ShadowMapping.h"
-<<<<<<< HEAD
 #include <time.h>
-=======
 #ifdef __APPLE__
 #include <math.h>
 #endif
->>>>>>> ee7b4a3ede60251daffd5151a88605b3710da02b
+
 
 /* for drawing multiple obj */
 #define monsterNum 3
 #define girlNum 3
 #define offset -5
-#define step_size 1
+#define step_size 0.1
 //#define turing_ratio 0.2
 
 // generate a random float in [-step_size, step_size]
@@ -122,7 +120,7 @@ void random_walk(float girl_r, float mons_r) {
 
 		// detect if new_pos of girl touchs the wall
 		Vector3 reflect_dir;
-		if (isTouchWall(new_pos, girl_r, reflect_dir)) {
+		if (isTouchWall(new_pos, mons_r, reflect_dir)) {
 			Vector3 L = *(monster_dir.at(i));
 			Vector3 new_dir = L + reflect_dir.multiply(2 * (L.multiply(-1).dot(reflect_dir)));
 			*(monster_dir.at(i)) = new_dir;
@@ -380,7 +378,8 @@ void ShadowMapping::drawObjects(Group* group)
 	// Ground
 	float sq_l = Globals::grd_length / 2;
 	float sq_w = Globals::grd_width / 2;
-	glColor4f(244.0/255, 164.0/255, 96.0/255, 1);
+	glColor4f(244.0 / 255, 164.0 / 255, 96.0 / 255, 1);
+	//glColor4f(139.0/255, 69.0/255, 19.0/255, 1);
 	glBegin(GL_QUADS);
 	glVertex3f(-sq_w, d, sq_l);
 	glVertex3f(sq_w, d, sq_l);
@@ -527,6 +526,8 @@ void ShadowMapping::drawObjects(Group* group)
 	}
 
 	// update monster_pos and girl_pos
+
+	if (Globals::movementOn)
 	random_walk(Globals::girl.radius_bounding, Globals::monster.radius_bounding);
 
 	//Globals::girl.render();

@@ -119,9 +119,9 @@ void Particle::pixelReborn(int id) {
 
 		// Setting initial position
 
-		pixel[id].x = -5 + (rand() / (float)RAND_MAX);
-		pixel[id].y = -5 + (rand() / (float)RAND_MAX) / 2;
-		pixel[id].z = -5 + (rand() / (float)RAND_MAX);
+		pixel[id].y = -5 + (rand() / (float)RAND_MAX);
+		pixel[id].x = -5 + (rand() / (float)RAND_MAX) / 2;
+		pixel[id].z = 2 + (rand() / (float)RAND_MAX);
 
 		// Setting speed of the pixel
 		pixel[id].xSpeed = xSpeedVal;
@@ -138,7 +138,7 @@ void Particle::pixelReborn(int id) {
 		pixel[id].alpha = 1.0f;
 
 		// Giving PARTICLE a size ( it affects all small pixels )
-		pixel[id].particleSize = 0.5f + ((float)rand() / (float)RAND_MAX) * 3.3f;
+		pixel[id].particleSize = 5.5f + ((float)rand() / (float)RAND_MAX) * 3.3f;
 	
 
 }

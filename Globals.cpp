@@ -48,3 +48,5 @@ OBJObject Globals::monster("monster.obj", true);
 #ifdef _WIN32
 Shader Globals::skybox("skybox.vert", "skybox.frag", true);
 #endif
+
+bool Globals::movementOn = false;
