@@ -17,12 +17,14 @@ Texture* Globals::grdTex = 0;
 Texture* Globals::wallTex = 0;
 float Globals::grd_length = 1000;
 float Globals::grd_width = 700;
-float Globals::grd_depth = -1.5;
+float Globals::grd_depth = -20;
 float Globals::wall_height = 50;
 
 bool Globals::cam3Dmove_on = false;
 
-Tree Globals::tree;
+Tree Globals::tree(0);
+Tree Globals::tree1(1);
+Tree Globals::tree2(2);
 
 Particle Globals::particle;
 

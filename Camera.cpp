@@ -123,8 +123,8 @@ void Camera::moveFoward(bool changeY_on) {
 	dir.normalize();
 	dir.scale(0.4);
 
-	e = e + dir;
-	d = d + dir;
+	e = e + dir * 0.3;
+	d = d + dir * 0.3;
 
 	update();
 }
@@ -137,8 +137,8 @@ void Camera::moveBack(bool changeY_on) {
 	dir.normalize();
 	dir.scale(0.4);
 
-	e = e - dir;
-	d = d - dir;
+	e = e - dir * 0.1;
+	d = d - dir * 0.1;
 
 	update();
 }
@@ -150,8 +150,8 @@ void Camera::moveLeft() {
 	rightDir.normalize();
 	rightDir.scale(0.4);
 
-	e = e - rightDir;
-	d = d - rightDir;
+	e = e - rightDir * 0.3;
+	d = d - rightDir * 0.3;
 
 	update();
 }
@@ -163,8 +163,8 @@ void Camera::moveRight() {
 	rightDir.normalize();
 	rightDir.scale(0.4);
 
-	e = e + rightDir;
-	d = d + rightDir;
+	e = e + rightDir * 0.3;
+	d = d + rightDir * 0.3;
 
 	update();
 }

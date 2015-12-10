@@ -1,12 +1,30 @@
 #include "Tree.h"
 
 
-Tree::Tree() {
-	language.push_back(rule);
 
+Tree::Tree(int type) {
+
+	if (type == 0)
+		ruleChosen = rule;
+	
+	else if (type == 1)
+		ruleChosen = rule1;
+
+	else if (type == 2)
+		ruleChosen = rule2;
+	else {
+		cout << "invalid type of tree... using default" << endl;;
+		ruleChosen = DefaultRule;
+	}
+
+	
+	language.push_back(ruleChosen);
+
+	
 	for (int i = 0; i < MAX_DEPTH; i++)
 		expand();
 }
+
 
 void Tree::drawLine() {
 
@@ -32,7 +50,7 @@ void Tree::draw() {
 		str = language.at(i);
 
 		if (str.compare("F") == 0 || str.compare("Y") == 0) {
-			glColor3f(1, 0, 0); // red
+			glColor3f(0.5f, 0.35f, 0.05f); // brown
 			drawLine();
 		}
 		else if (str.compare("[") == 0) {
@@ -75,16 +93,16 @@ void Tree::expand() {
 
 	string newLanguage = "";
 
-	for (int i = 0; i < rule.length(); i++) {
+	for (int i = 0; i < ruleChosen.length(); i++) {
 
-		if (rule.at(i) == 'F')
+		if (ruleChosen.at(i) == 'F')
 			newLanguage.append("FF");
-		else if (rule.at(i) == 'Y')
+		else if (ruleChosen.at(i) == 'Y')
 			newLanguage.append("F[+YL]F[-YL]+Y");
 		else
-			newLanguage += rule.at(i);
+			newLanguage += ruleChosen.at(i);
 		}
-	rule = newLanguage;
+	ruleChosen = newLanguage;
 	language.push_back(newLanguage);
 }
 

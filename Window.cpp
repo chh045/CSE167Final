@@ -36,6 +36,12 @@ Shader* envMapping_shader;
 // For frame
 int frame = 0, time, timebase = 0;
 
+float mouseXposition = 0;
+float mouseYposition = 0;
+
+
+
+
 extern const int NUMBER_OF_PIXELS;  // from Particle.h
 extern const int MAX_DEPTH;
 
@@ -145,12 +151,12 @@ void Window::displayCallback()
 	glEnable(GL_CULL_FACE);
 	shadow->bind();
 	shadow->renderScene(Globals::group, Globals::emulateDay);
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 
-	//glCullFace(GL_BACK);
+	glCullFace(GL_BACK);
 	shadow->drawObjects(Globals::group);
 	shadow->unbind();
-//	glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 
 
 
@@ -170,7 +176,7 @@ void Window::displayCallback()
 
 	Globals::particle.draw();  // draw the p[0] ~ p[?]  particles
 
-	Globals::tree.draw();
+	//Globals::tree.draw();
 
 	// try to draw the groud
 	if (false) {
@@ -267,17 +273,29 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 
 	case 'A':
 		Globals::tree.angle++;
+		Globals::tree1.angle++;
+		Globals::tree2.angle++;
 		break;
 	case 'a':
 		Globals::tree.angle--;
+		Globals::tree1.angle--;
+		Globals::tree2.angle--;
 		break;
 	case 'D':
 		if (Globals::tree.current_depth < MAX_DEPTH)
 			Globals::tree.current_depth++;
+		if (Globals::tree1.current_depth < MAX_DEPTH)
+			Globals::tree1.current_depth++;
+		if (Globals::tree2.current_depth < MAX_DEPTH)
+			Globals::tree2.current_depth++;
 		break;
 	case 'd':
 		if (Globals::tree.current_depth > 0)
 			Globals::tree.current_depth--;
+		if (Globals::tree1.current_depth > 0)
+			Globals::tree1.current_depth--;
+		if (Globals::tree2.current_depth > 0)
+			Globals::tree2.current_depth--;
 		break;
 	case 'h':
 		Globals::cam3Dmove_on = !Globals::cam3Dmove_on;
@@ -308,17 +326,21 @@ void Window::keyboardCallback(unsigned char key, int x, int y)
 		Globals::camera.orbitTrack(Globals::camera.getUp(), -2);
 		break;
 
-	case '0':
-		Globals::tree.printLanguage(0);
-		break;
 	case '1':
-		Globals::tree.printLanguage(1);
+		//rot_axis[0] -= 0.1;
+//		Globals::camera.rotate(rot_axis, rot_angle);
 		break;
 	case '2':
-		Globals::tree.printLanguage(2);
+	//	rot_axis[0] += 0.1;
+	//	Globals::camera.rotate(rot_axis, rot_angle);
 		break;
 	case '3':
-		Globals::tree.printLanguage(3);
+		//rot_axis[1] += 0.1;
+//Globals::camera.rotate(rot_axis, rot_angle);
+		break;
+	case '4':
+		//rot_axis[1] -= 0.1;
+	//	Globals::camera.rotate(rot_axis, rot_angle);
 		break;
 
 	default:
@@ -336,28 +358,34 @@ void Window::specialKeyCallback(int key, int x, int y)
 		case GLUT_KEY_DOWN:
 		Globals::camera.moveBack(Globals::cam3Dmove_on);
 		break;
+		*/
 		case GLUT_KEY_LEFT:
 		Globals::camera.moveLeft();
 		break;
 		case GLUT_KEY_RIGHT:
 		Globals::camera.moveRight();
 		break;
-		*/
-	case GLUT_KEY_LEFT:
-		Globals::camera.moveLeft();
-		break;
+		
 
-	case GLUT_KEY_RIGHT:
-		Globals::camera.moveRight();
+
+	case GLUT_KEY_DOWN:
+		Globals::camera.moveBack(Globals::cam3Dmove_on);
 		break;
 
 	case GLUT_KEY_UP:
 		Globals::camera.moveFoward(Globals::cam3Dmove_on);
 		break;
 
-	case GLUT_KEY_DOWN:
-		Globals::camera.moveBack(Globals::cam3Dmove_on);
+		/*
+	case GLUT_KEY_RIGHT:
+		Globals::camera.moveRight();
 		break;
+
+
+		case GLUT_KEY_LEFT:
+		Globals::camera.moveLeft();
+		break;
+		*/
 
 	default:
 		break;
@@ -424,17 +452,143 @@ void Window::mouseMotion(int x, int y)
 
 void Window::passiveMouseMotion(int x, int y) {
 
+
 	// rotate in camera space (z axis is out from the screen)
-	Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
+/*	Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
 	Vector3 neg_z(0, 0, -1);
 
-	Vector3 rot_axis = neg_z.cross(axis);
+	// put it back to mouse passive later
+	Vector3 rot_axis;
+	float rot_angle;
+
+	 rot_axis = neg_z.cross(axis);
 	float velocity = (axis - neg_z).magnitude();
 
-	if (velocity > 0.001) {
-		float rot_angle = velocity * 0.05;
-		Globals::camera.rotate(rot_axis, rot_angle);
+	float dx;
+	float dy;
+
+	float valUPRIGHT = 0.00001;
+	float valLEFTRIGHT = 0.00001;
+
+	float limitHorizontal = 0.001;
+	float limitVertical = 0.001;
+
+	dx = mouseYposition - rot_axis[1];
+	dy = rot_axis[0] - mouseXposition ;
+	
+
+	mouseXposition = rot_axis[0];
+	mouseYposition = rot_axis[1];
+
+	// quad 1  (+,+)
+	if (dx >= 0 && dy>= 0) {
+		if (rot_axis[0] < 0)
+			rot_axis[0] = valUPRIGHT;
+		if (rot_axis[1] > 0)
+			rot_axis[1] = -valLEFTRIGHT;
+		
+		// move right only
+		if (dy >= 0 && dy <= limitHorizontal) {
+			rot_axis[0] = 0;
+			rot_axis[1] = -valLEFTRIGHT;
+		}
+
+		// move up only
+		if (dx >= 0 && dx <= limitVertical) {
+			rot_axis[0] = valUPRIGHT;
+			rot_axis[1] = 0;
+		}
+
+
 	}
+	// quad 2 ( +, -)
+	else if (dx >= 0 && dy < 0) {
+		if (rot_axis[0] > 0)
+   		 rot_axis[0] = -valUPRIGHT;
+		if (rot_axis[1] > 0)
+			rot_axis[1] = -valLEFTRIGHT;
+
+		// move right only
+		if (dy >= 0 && dy <= limitHorizontal) {
+			rot_axis[0] = 0;
+			rot_axis[1] = -valLEFTRIGHT;
+		}
+
+		// move down only
+		if (dx < 0 && dx >= -limitVertical) {
+			rot_axis[0] = -valUPRIGHT;
+			rot_axis[1] = 0;
+		}
+
+	}
+	// quad 3 ( - , + )
+	else if (dx < 0 && dy >= 0) {
+		if (rot_axis[0] < 0)
+		rot_axis[0] = valUPRIGHT;
+		if (rot_axis[1] < 0)
+			rot_axis[1] = valLEFTRIGHT;
+
+		// move left only
+		if (dy < 0 && dy >= -limitHorizontal) {
+			rot_axis[0] = 0;
+			rot_axis[1] = valLEFTRIGHT;
+		}
+
+		// move up only
+		if (dx >= 0 && dx <= limitVertical) {
+			rot_axis[0] = valUPRIGHT;
+			rot_axis[1] = 0;
+		}
+	}
+	//quad 4 ( - , - )
+	else if (dx < 0 && dy < 0) {
+		if (rot_axis[0] > 0)
+			rot_axis[0] = -valUPRIGHT;
+		if (rot_axis[1] < 0)
+			rot_axis[1] = valLEFTRIGHT;
+
+		// move left only
+		if (dy < 0 && dy >= -limitVertical) {
+			rot_axis[0] = 0;
+			rot_axis[1] = valLEFTRIGHT;
+		}
+
+		// move down only
+		if (dx < 0 && dx >= -limitHorizontal) {
+			rot_axis[0] = -valUPRIGHT;
+			rot_axis[1] = 0;
+		}
+	}
+	
+	if (velocity > 0.1) {
+		rot_angle = velocity * 0.05 * 0.5;
+
+
+		Globals::camera.rotate(rot_axis, rot_angle);
+		rot_axis.print("vect");
+		cout << "x: " << x << endl;
+		cout << "dx: " << dx << endl;
+		cout << "y: " <<y << endl;
+		cout << "dy: " << dy << endl;
+
+		
+
+	}
+	*/
 
 	//gluLookAt(1.0, 0.0, 0.0, x, y, 0, 0.0, 1.0, 0.0);
+	
+
+// louis cam:
+Vector3 axis = rotateAxis(x, y, Window::width, Window::height);
+Vector3 neg_z(0, 0, -1);
+
+Vector3 rot_axis = neg_z.cross(axis);
+float velocity = (axis - neg_z).magnitude();
+
+if (velocity > 0.001) {
+	float rot_angle = velocity * 0.05;
+	Globals::camera.rotate(rot_axis, rot_angle);
+}
+
 }

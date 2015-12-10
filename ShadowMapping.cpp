@@ -235,7 +235,7 @@ void ShadowMapping::endTranslate()
 void ShadowMapping::drawObjects(Group* group)
 {
 	float d = Globals::grd_depth;
-	/*
+	
 	// Ground
 	glColor4f(0.3f, 0.3f, 0.3f, 1);
 	glBegin(GL_QUADS);
@@ -243,11 +243,11 @@ void ShadowMapping::drawObjects(Group* group)
 	glVertex3f(4000.0, d, 10000.0);
 	glVertex3f(4000.0, d, -10000.0);
 	glVertex3f(-4000.0, d, -10000.0);
-	glEnd();*/
+	glEnd();
 	
     // Ground
 
-	
+	/*
 	Globals::grdTex->bind();
     glColor4f(0.3f, 0.3f, 0.3f, 1);
     glBegin(GL_QUADS);
@@ -261,7 +261,7 @@ void ShadowMapping::drawObjects(Group* group)
     glVertex3f(-4000.0,d,-10000.0);
     glEnd();
 	Globals::grdTex->unbind();
-	
+	*/
 	/*
 	int length = Globals::grd_length;
 	//Globals::grdTex->bind();
@@ -302,31 +302,60 @@ void ShadowMapping::drawObjects(Group* group)
 	// draw cube
     glColor4f(0.9f,0.9f,0.9f,1);
     
-    startTranslate(5,0,-5);
-    glutSolidCube(4);
+    startTranslate(5,-18,-5);
+    //glutSolidCube(4);
     endTranslate();
     
-    startTranslate(-5,5,-5);
-    glutSolidSphere(3, 50, 50);
+    startTranslate(-5,-10,-5);
+    //glutSolidSphere(3, 5000, 5000);
     endTranslate();
     
     
-    startTranslate(-3,-0.5,8);
+    startTranslate(-3,-20,8);
     Globals::girl.render();
     endTranslate();
+
+	//startTranslate(13, -20, -10);
+	glPushMatrix();
+	glTranslatef(-30, -20, -10);
+	glScalef(0.5f, 0.5f, 0.5f);
+	Globals::tree.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(30, -20, -10);
+	glScalef(0.5f, 0.5f, 0.5f);
+	Globals::tree1.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-30, -20, 10);
+	glScalef(0.5f, 0.5f, 0.5f);
+	Globals::tree2.draw();
+	//cout << Globals::tree.current_depth << endl;;
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(30, -20, 10);
+	glScalef(0.5f, 0.5f, 0.5f);
+	Globals::tree.draw();
+	glPopMatrix();
+	//glTranslatef(-13, -20, -10);
+	//endTranslate();
+
     
-	startTranslate(3, -0.5, 8);
+	startTranslate(3, -20, 8);
 	Globals::bunny.render();
 	endTranslate();
 
-	startTranslate(10, -0.5, 8);
+	startTranslate(-7, -20, 20);
 	Globals::house.render();
 	endTranslate();
 
-	startTranslate(-7, -0.5, 8);
+	startTranslate(-7, -20, 8);
 	Globals::monster.render();
 	endTranslate();
-
+	
 	//Globals::girl.render();
 	
     

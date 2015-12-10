@@ -45,6 +45,9 @@ public:
 	static bool cam3Dmove_on; // camera moving up/down?
 
 	static Tree tree;
+	static Tree tree1;
+	static Tree tree2;
+
 
 	static Particle particle;
     

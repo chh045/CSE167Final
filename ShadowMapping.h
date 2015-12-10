@@ -95,7 +95,7 @@ private:
     float l_camera[3] = {2,0,-10};
 
     //Light position
-    float p_light[3] = {30,20,30};
+    float p_light[3] = {30,100,30};
 
     //Light lookAt
     float l_light[3] = {0,0,-5};
