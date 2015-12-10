@@ -238,7 +238,7 @@ void Window::displayCallback()
 	frame++;
 	time1 = glutGet(GLUT_ELAPSED_TIME);
 	if (time1 - timebase > 1000) {
-		//std::cout << "FPS: " << frame*1000.0 / (time - timebase) << std::endl;
+		//std::cout << "FPS: " << frame*1000.0 / (time1 - timebase) << std::endl;
 		timebase = time1;
 		frame = 0;
 	}
