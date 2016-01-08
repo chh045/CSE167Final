@@ -87,6 +87,53 @@ bool isTouchWall(Vector3 pos, float radius, Vector3 & reflect_vec) {
 	return false;
 }
 
+bool isTouchOther(Vector3 myOldPos, Vector3 &myDir, float myR, float girl_r, float mons_r) {
+	for (int i = 0; i < girlNum; i++) {
+		Vector3 targetPos = *(girl_pos.at(i));
+		// dont compare with yourself
+		if (myOldPos == targetPos)
+			continue;
+
+		if (myOldPos.distance(targetPos) < myR + girl_r) {
+			// update my dir
+			Vector3 myCollideNormal = (myOldPos - targetPos).normalize();
+			myDir = myDir + myCollideNormal.multiply(2 * (myDir.multiply(-1).dot(myCollideNormal)));
+
+			// update target's dir
+			Vector3 targetCollideNormal = myCollideNormal.multiply(-1);
+			Vector3& targetDir = *(girl_dir.at(i));
+			targetDir = targetDir + targetCollideNormal.multiply(2 * (targetDir.multiply(-1).dot(targetCollideNormal)));
+
+			girl_collision.at(i) = true;
+
+			return true;
+		}
+	}
+
+	for (int i = 0; i < monsterNum; i++) {
+		Vector3 targetPos = *(monster_pos.at(i));
+		// dont compare with yourself
+		if (myOldPos == targetPos)
+			continue;
+
+		if (myOldPos.distance(targetPos) < myR + mons_r) {
+			// update my dir
+			Vector3 myCollideNormal = (myOldPos - targetPos).normalize();
+			myDir = myDir + myCollideNormal.multiply(2 * (myDir.multiply(-1).dot(myCollideNormal)));
+
+			// update target's dir
+			Vector3 targetCollideNormal = myCollideNormal.multiply(-1);
+			Vector3& targetDir = *(girl_dir.at(i));
+			targetDir = targetDir + targetCollideNormal.multiply(2 * (targetDir.multiply(-1).dot(targetCollideNormal)));
+
+			monster_collision.at(i) = true;
+
+			return true;
+		}
+	}
+	return false;
+
+}
 void random_walk(float girl_r, float mons_r) {
 	
 	
@@ -105,6 +152,13 @@ void random_walk(float girl_r, float mons_r) {
 			*(girl_dir.at(i)) = new_dir;
 			*(girl_pos.at(i)) = girl_pos.at(i)->add(*(girl_dir.at(i))*step_size);
 
+			girl_collision.at(i) = true;
+		}
+		// detect if touch others
+		// isTouchOther(Vector3 myOldPos, Vector3 &myDir, float myR, float girl_r, float mons_r) 
+		else if (isTouchOther(*(girl_pos.at(i)), *(girl_dir.at(i)), girl_r, girl_r, mons_r)) {
+			Vector3 delta_dir = girl_dir.at(i)->multiply(step_size);
+			*(girl_pos.at(i)) = girl_pos.at(i)->add(delta_dir);
 			girl_collision.at(i) = true;
 		}
 		// else assign new_pos to current pos
@@ -126,6 +180,13 @@ void random_walk(float girl_r, float mons_r) {
 			*(monster_dir.at(i)) = new_dir;
 			*(monster_pos.at(i)) = monster_pos.at(i)->add(*(monster_dir.at(i))*step_size);
 
+			monster_collision.at(i) = true;
+		}
+		// detect if touch others
+		// isTouchOther(Vector3 myOldPos, Vector3 &myDir, float myR, float girl_r, float mons_r) 
+		else if (isTouchOther(*(monster_pos.at(i)), *(monster_dir.at(i)), mons_r, girl_r, mons_r)) {
+			Vector3 delta_dir = monster_dir.at(i)->multiply(step_size);
+			*(monster_pos.at(i)) = monster_pos.at(i)->add(delta_dir);
 			monster_collision.at(i) = true;
 		}
 		// else assign new_pos to current pos
